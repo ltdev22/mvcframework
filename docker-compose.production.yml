@@ -1,0 +1,4 @@
+version: '3'
+
+# TODO set it to run in production
+services:

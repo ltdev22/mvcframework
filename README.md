@@ -3,6 +3,20 @@
 A custom MVC framework developed in OO PHP.
 
 
+## Configuration
+Open the terminal and run `$ cp .env.example .env` to create a new _.env_ file, or open `.env.example` and save it as `.env`.
+Once the _.env_ file is created set the env variables. These variables are 
+
+1. either app/framework specific e.g.
+- _APP_NAME_ is used to define the name of the app we are building
+- _APP_ENV_ is used to specify in which environment the framework is running (is it local, staging or production?)
+
+2. or environment specific e.g.
+- _APACHE_SERVER_NAME_ is used to specify a domain name within the apache config
+- _PHP_DATE_TIMEZONE_ is used to specify the server's date timezone
+- _PHP_DISPLAY_ERRORS_ and _PHP_ERROR_REPORTING_ are used to specify whether to display any php errors and warnings on screen. Ideally these should be switched off in a production/live environment.
+
+
 ## Docker
 
 If you 're running the framework on Docker

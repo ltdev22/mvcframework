@@ -13,6 +13,6 @@ try {
     $dotenv = \Dotenv\Dotenv::create(__DIR__ . '/..//');
     $dotenv->load();
 } catch (\Dotenv\Exception\InvalidPathException $e) {
-    // If we can't find the .env file and can't read any ENV variable,
-    // then we can't see any of the configuration, so this is safe to stay empty.
+    // We don't need to do anything here actually if we can't find the .env file
+    // or can't read any ENV variables, as we can't see any of the configuration
 }

@@ -25,13 +25,21 @@ COPY docker/config/php/php.ini /usr/local/etc/php/php.ini
 COPY docker/config/php/conf.d/*.ini /usr/local/etc/php/conf.d/
 COPY docker/start.sh /usr/local/bin/start
 
+# Cache composer packages
+WORKDIR /tmp/
+COPY composer.json composer.lock /tmp/
+RUN composer install --no-interaction --no-plugins --no-scripts --prefer-dist \
+   && rm -rf composer.json composer.lock vendor/
+
 # Set working dir and copy the app in the container
 WORKDIR /var/www/html/
 COPY . /var/www/html/
 
 # Fix permission denied errors by chowing the workdir to apache www-data
+# and once again run composer if there are any changes
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod +x /usr/local/bin/start
+    && chmod +x /usr/local/bin/start \
+    && composer install --no-interaction --no-plugins --no-scripts --prefer-dist
 
 CMD ["/usr/local/bin/start"]
 

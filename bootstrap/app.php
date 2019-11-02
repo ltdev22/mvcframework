@@ -17,6 +17,13 @@ try {
     // or can't read any ENV variables, as we can't see any of the configuration
 }
 
+$loader = new \App\Config\Loaders\ArrayLoader([
+    'app' => base_path('config/app.php'),
+    'cache' => base_path('config/cache.php'),
+]);
+dump($loader->parse());
+die();
+
 // Load the container
 require_once base_path('/bootstrap/container.php');
 

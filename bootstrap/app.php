@@ -16,3 +16,6 @@ try {
     // We don't need to do anything here actually if we can't find the .env file
     // or can't read any ENV variables, as we can't see any of the configuration
 }
+
+// Load the container
+require_once __DIR__ . '/container.php';

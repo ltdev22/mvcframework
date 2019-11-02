@@ -5,7 +5,9 @@
         }
     },
     "require": {
-        "vlucas/phpdotenv": "^3.6"
+        "vlucas/phpdotenv": "^3.6",
+        "league/container": "^3.3",
+        "psr/log": "^1.1"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.3"

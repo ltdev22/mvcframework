@@ -33,7 +33,7 @@ class ViewServiceProvider extends AbstractServiceProvider
 
             // Set up Twig as per documentation 
             // @see https://twig.symfony.com/doc/2.x/api.html
-            $loader = new FilesystemLoader(__DIR__ . '/../../views');
+            $loader = new FilesystemLoader(base_path('views'));
 
             $twig = new Twig($loader, [
                 'cache' => false,

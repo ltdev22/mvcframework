@@ -10,7 +10,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 // Try and load the env variables.
 try {
-    $dotenv = \Dotenv\Dotenv::create(__DIR__ . '/..//');
+    $dotenv = \Dotenv\Dotenv::create(base_path());
     $dotenv->load();
 } catch (\Dotenv\Exception\InvalidPathException $e) {
     // We don't need to do anything here actually if we can't find the .env file
@@ -18,13 +18,13 @@ try {
 }
 
 // Load the container
-require_once __DIR__ . '/container.php';
+require_once base_path('/bootstrap/container.php');
 
 // Get the routes (route collection) out of the container
 // Then we need to load the routes first before the request and the response are dispatched
 // Finally we can dispatch the route along with both the request and the response
 $route = $container->get(\League\Route\Router::class);
 
-require_once __DIR__ . '/../routes/web.php';
+require_once base_path('/routes/web.php');
 
 $response = $route->dispatch($container->get('request'));

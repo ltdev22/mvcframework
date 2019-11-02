@@ -1,7 +1,11 @@
 <?php
 
-$route->get('/', function ($request) {
-    $response = new \Zend\Diactoros\Response;
-    $response->getBody()->write('Hello World from routes!');
-    return $response;
-});
+/**
+ * Web routes are set here
+ *
+ * Example would be:
+ * - $route->get('/foo', 'App\Controllers\FooController::fooMethod')->setName('foo');
+ *
+ */
+
+$route->get('/', 'App\Controllers\HomeController::index')->setName('home');

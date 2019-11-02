@@ -3,6 +3,7 @@
 namespace App\Wrappers;
 
 use Twig\Environment as Twig;
+use Zend\Diactoros\Response;
 
 class View
 {
@@ -25,14 +26,22 @@ class View
     }
 
     /**
-     * Render the response comming from the controllers
-     * 
-     * @param   Zend\Diactoros\Response $response
+     * Render the view thats being injected to the controller
+     * with any required data passed to it.
+     *
+     * @param  string   $view     the view template
+     * @param  array    $data     array of data
+     *
      * @return  Zend\Diactoros\Response
      */
-    public function render(Response $response): Response
+    public function render(string $view, array $data = [])
     {
-        $response->getBody()->write('Hello World from render!');
+        $response = new Response();
+
+        $response->getBody()->write(
+            $this->twig->render($view, $data)
+        );
+
         return $response;
     }
 }

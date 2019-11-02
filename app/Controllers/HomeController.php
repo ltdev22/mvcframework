@@ -35,6 +35,8 @@ class HomeController extends Controller
      */
     public function index(RequestInterface $request) : Response
     {
-        return $this->view->render(new Response);
+        $test = 'foo';
+
+        return $this->view->render('home.twig', compact('test'));
     }
 }

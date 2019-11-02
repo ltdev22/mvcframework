@@ -3,6 +3,11 @@
 namespace App\Providers;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
+use League\Route\Router;
+use League\Route\Strategy\ApplicationStrategy;
+use Zend\Diactoros\Response;
+use Zend\Diactoros\ServerRequestFactory;
+use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
 
 class AppServiceProvider extends AbstractServiceProvider
 {
@@ -12,7 +17,10 @@ class AppServiceProvider extends AbstractServiceProvider
      * @var array
      */
     protected $provides = [
-        'test',
+        Router::class,
+        'response',
+        'request',
+        'emitter',
     ];
 
     /**
@@ -28,8 +36,24 @@ class AppServiceProvider extends AbstractServiceProvider
         
         $container = $this->getContainer();
 
-        $container->share('test', function () {
-            return 'Hello World!';
+        // Register the routes within the service provider
+        $container->share(Router::class, function () use ($container) {
+            $strategy = (new ApplicationStrategy())->setContainer($container);
+            return (new Router)->setStrategy($strategy);
+        });
+
+        // Share the response and the request thats going to be outputed on the page
+        $container->share('response', Response::class);
+
+        $container->share('request', function () {
+            return ServerRequestFactory::fromGlobals(
+                $_SERVER, $_GET, $_POST, $_COOKIE, $_FILES
+            );
+        });
+
+        // Finally we can share the emitter to emit this response
+        $container->share('emitter', function () {
+            return new SapiEmitter;
         });
     }
 }

@@ -19,3 +19,12 @@ try {
 
 // Load the container
 require_once __DIR__ . '/container.php';
+
+// Get the routes (route collection) out of the container
+// Then we need to load the routes first before the request and the response are dispatched
+// Finally we can dispatch the route along with both the request and the response
+$route = $container->get(\League\Route\Router::class);
+
+require_once __DIR__ . '/../routes/web.php';
+
+$response = $route->dispatch($container->get('request'));

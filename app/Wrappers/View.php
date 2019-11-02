@@ -30,9 +30,9 @@ class View
      * @param   Zend\Diactoros\Response $response
      * @return  Zend\Diactoros\Response
      */
-    public function render($response)
+    public function render(Response $response): Response
     {
-        $response->getBody()->write('Hello World from inside the controller!');
+        $response->getBody()->write('Hello World from render!');
         return $response;
     }
 }

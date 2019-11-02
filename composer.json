@@ -10,7 +10,8 @@
         "psr/log": "^1.1",
         "league/route": "^4.3",
         "zendframework/zend-diactoros": "^2.1",
-        "zendframework/zend-httphandlerrunner": "^1.1"
+        "zendframework/zend-httphandlerrunner": "^1.1",
+        "twig/twig": "^2.12"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.3"

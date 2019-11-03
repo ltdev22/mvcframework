@@ -12,6 +12,10 @@ $container = new \League\Container\Container;
 // As long as they get typehinted in the controller constructor auto-wiring is taking care of this ;-)
 $container->delegate(new \League\Container\ReflectionContainer());
 
-$container->addServiceProvider(new \App\Providers\AppServiceProvider());
-$container->addServiceProvider(new \App\Providers\ViewServiceProvider());
+// We register dynamically within the framework any service providers here.
+// But note, the ConfigServiceProvider needs to be registered first by default in order to load any config settings.
 $container->addServiceProvider(new \App\Providers\ConfigServiceProvider());
+
+foreach ($container->get('config')->get('app.providers') as $provider) {
+    $container->addServiceProvider(new $provider());
+}

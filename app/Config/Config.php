@@ -45,7 +45,7 @@ class Config
      *
      * @param  string   $key
      * @param  mixed    $default
-     * @return string
+     * @return mixed
      */
     public function get($key, $default = null)
     {
@@ -122,10 +122,10 @@ class Config
      * Cache out of a particular key the value.
      *
      * @param  string $key
-     * @param  string $value
-     * @return string
+     * @param  mixed $value
+     * @return mixed
      */
-    protected function addToCache(string $key, string $value): string
+    protected function addToCache(string $key, $value)
     {
         $this->cache[$key] = $value;
         return $value;

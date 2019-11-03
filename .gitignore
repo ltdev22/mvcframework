@@ -1,2 +1,4 @@
 vendor/
 .env
+cache/views/*
+!cache/views/.gitkeep

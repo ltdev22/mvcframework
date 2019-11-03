@@ -18,7 +18,7 @@ class CmderCommand extends Command
      * 
      * @param string
      */
-    protected $description = 'This is command is used to check if cmder is running properly.';
+    protected $description = 'Check if Cmder is running properly.';
     
     /**
      * Handle the execution of the command.
@@ -27,7 +27,7 @@ class CmderCommand extends Command
      */
     public function handle()
     {
-        echo "Hello World!\n";
+        return $this->info('Hello World!');
     }
     
     /**

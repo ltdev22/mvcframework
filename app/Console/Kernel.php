@@ -21,6 +21,7 @@ class Kernel
     protected $defaultCommands = [
         '\App\Console\Commands\Generators\ConsoleGeneratorCommand',
         '\App\Console\Commands\Generators\ControllerGeneratorCommand',
+        '\App\Console\Commands\Generators\ProviderGeneratorCommand',
     ];
     
     /**

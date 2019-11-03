@@ -38,7 +38,7 @@ class ControllerGeneratorCommand extends Command
     public function handle(InputInterface $input, OutputInterface$output)
     {
         // Grab the base controller and set namespacing
-        $controllerBase = __DIR__ . '/../../../Controllers';
+        $controllerBase = base_path('/app/Controllers');
         $controllerPath = $controllerBase . '/';
         $namespace = 'App\\Controllers';
 
@@ -88,7 +88,7 @@ class ControllerGeneratorCommand extends Command
     protected function arguments(): array
     {
         return [
-            ['name', InputArgument::REQUIRED, 'The name of the command to generate.'],
+            ['name', InputArgument::REQUIRED, 'The name of the controller to generate.'],
         ];
     }
 

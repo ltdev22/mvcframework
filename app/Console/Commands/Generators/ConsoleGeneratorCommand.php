@@ -44,7 +44,7 @@ class ConsoleGeneratorCommand extends Command
 
         // Find where we want to place the new file and
         // create the new file if it doesn't already exist
-        $target = __DIR__ . '/../' . $this->argument('name') . '.php';
+        $target = base_path('/app/Console/Commands/' . $this->argument('name') . '.php');
 
         if (file_exists($target)) {
             return $this->error('The command already exists.');

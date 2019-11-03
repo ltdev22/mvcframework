@@ -19,15 +19,21 @@ abstract class Command extends SymfonyCommand
     {
         parent::__construct();
     }
-    
+
     /**
-     * Configure the command, i.e. set name, description, arguments, options etc.
+     * Configure the command by setting
+     * - the command name,
+     * - the description,
+     * - any optional arguments & additional options
      * 
      * @return void
      */
     protected function configure()
     {
         $this->setName($this->command)->setDescription($this->description);
+
+        $this->addArguments();
+        $this->addOptions();
     }
 
     /**
@@ -41,6 +47,52 @@ abstract class Command extends SymfonyCommand
     {
         $this->setInputOutput($input, $output);
         return $this->handle($input, $output);
+    }
+
+    /**
+     * Return a specific argument.
+     *
+     * @param  string $name
+     */
+    protected function argument($name)
+    {
+        return $this->input->getArgument($name);
+    }
+
+    /**
+     * Return a specific option.
+     *
+     * @param  string $name
+     */
+    protected function option($name)
+    {
+        return $this->input->getOption($name);
+    }
+
+    /**
+     * Add any arguments we want to pass to the command when typing through the console.
+     *
+     * @return  void
+     */
+    protected function addArguments()
+    {
+        // Iterate through the array of arguments and use Symfony's addArgument
+        foreach ($this->arguments() as $argument) {
+            $this->addArgument($argument[0], $argument[1], $argument[2]);
+        }
+    }
+
+    /**
+     * Add any options we want to pass to the command when typing through the console.
+     *
+     * @return  void
+     */
+    protected function addOptions()
+    {
+        // Iterate through the array of options and use Symfony's addOption
+        foreach ($this->options() as $option) {
+            $this->addOption($option[0], $option[1], $option[2], $option[3], $option[4]);
+        }
     }
 
     /**

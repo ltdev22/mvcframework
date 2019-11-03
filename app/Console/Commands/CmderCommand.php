@@ -1,8 +1,15 @@
 <?php
-
+/**
+ * This is used as a guide for implementing more commands,
+ * it's not doing actually anything useful for the framework.
+ */
 namespace App\Console\Commands;
 
 use App\Console\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class CmderCommand extends Command
 {
@@ -11,7 +18,7 @@ class CmderCommand extends Command
      * 
      * @param string
      */
-    protected $command = 'cmder';
+    protected $command = 'test:cmder';
     
     /**
      * The description of the command.
@@ -22,31 +29,38 @@ class CmderCommand extends Command
     
     /**
      * Handle the execution of the command.
+     *
+     * @param  Symfony\Component\Console\Input\InputInterface       $input
+     * @param  Symfony\Component\Console\Output\OutputInterface     $output
      * 
-     * @return [type] [description]
+     * @return void
      */
-    public function handle()
+    public function handle(InputInterface $input, OutputInterface$output)
     {
-        return $this->info('Hello World!');
+        $this->info('The Cmder is up and running.');
     }
     
     /**
-     * Return an array of arguments.
+     * Command arguments.
      *
      * @return array
      */
     protected function arguments(): array
     {
-        return [];
+        return [
+            // 
+        ];
     }
     
     /**
-     * Return an array of options.
+     * Command options.
      *
      * @return array
      */
     protected function options(): array
     {
-        return [];
+        return [
+            // 
+        ];
     }
 } 

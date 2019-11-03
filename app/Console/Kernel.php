@@ -12,6 +12,15 @@ class Kernel
     protected $commands = [
         '\App\Console\Commands\CmderCommand',
     ];
+
+    /**
+     * Array holding all default/base commands.
+     *
+     * @var array
+     */
+    protected $defaultCommands = [
+        '\App\Console\Commands\Generators\ConsoleGeneratorCommand',
+    ];
     
     /**
      * Return the list of all the available commands.
@@ -20,6 +29,6 @@ class Kernel
      */
     public function getCommands(): array
     {
-        return $this->commands;
+        return array_merge($this->commands, $this->defaultCommands);
     }
 } 

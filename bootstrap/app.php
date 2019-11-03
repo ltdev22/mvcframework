@@ -17,19 +17,6 @@ try {
     // or can't read any ENV variables, as we can't see any of the configuration
 }
 
-$loader = new \App\Config\Loaders\ArrayLoader([
-    'app' => base_path('config/app.php'),
-    'cache' => base_path('config/cache.php'),
-]);
-$config = new \App\Config\Config();
-$config->load([$loader]);
-dump($config->get('app.name'));
-dump($config->get('app.name'));
-dump($config->get('app.name'));
-dump($config->get('app.name'));
-dump($config);
-die();
-
 // Load the container
 require_once base_path('/bootstrap/container.php');
 

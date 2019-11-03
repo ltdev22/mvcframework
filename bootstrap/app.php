@@ -21,7 +21,13 @@ $loader = new \App\Config\Loaders\ArrayLoader([
     'app' => base_path('config/app.php'),
     'cache' => base_path('config/cache.php'),
 ]);
-dump($loader->parse());
+$config = new \App\Config\Config();
+$config->load([$loader]);
+dump($config->get('app.name'));
+dump($config->get('app.name'));
+dump($config->get('app.name'));
+dump($config->get('app.name'));
+dump($config);
 die();
 
 // Load the container

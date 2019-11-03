@@ -29,3 +29,15 @@ If you 're running the framework on Docker
 To use Composer and run commands
 - You can either run `$ docker-compose exec app bash` and then `$ composer install` within the running _app_ container.
 - Or run in the local cli `$ docker run --rm --interactive --tty --volume $PWD:/app composer <the composer command here>` using the Composer official image
+
+
+## Cmder
+
+The _Cmder_ is the cli tool included within the framework and it is driven by the powerful Symfony Console component. It provides a number of helpful commands to use while developing your application and help to speed up your work. It's something similar to Laravel's artisan cli tool. Here is a list with some of the commands provided
+by Cmder
+
+- To list all the available commands: `$ php cmder`
+- To generate a new controller: `$ php cmder make:controller FooController` or `$ php cmder make:controller Some\\Nested\\FooController`
+- To generate a new service provider: `$ php cmder make:provider FooProvider`. __Note:__ running this command will only generate the new provider class. In order the provider to work within the framework you 'll need to register it within the `providers` list located in the `config/app.php`
+- To generate a new custom command: `$ php cmder make:console FooCommand`
+

@@ -1,0 +1,27 @@
+<?php
+
+namespace DummyNamespace;
+
+use Psr\Http\Message\RequestInterface;
+use App\Views\View;
+
+class DummyController extends Controller
+{
+    /**
+     * The view instance injected in routes.php
+     *
+     * @var $this
+     */
+    protected $view;
+
+    /**
+     * Instatiate the controller
+     *
+     * @param   \App\Views\View     $view
+     * @return  void
+     */
+    public function __construct(View $view)
+    {
+        $this->view = $view;
+    }
+}

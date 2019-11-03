@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+<?php
+
+// Include framework's dependencies through composer's autoload feature
+require_once __DIR__ . '/bootstrap/app.php';
+
+$console = new App\Console\Console($container);
+$console->boot(new App\Console\Kernel);
+
+$console->run();

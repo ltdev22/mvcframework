@@ -23,6 +23,7 @@ class Kernel
         '\App\Console\Commands\Generators\ControllerGeneratorCommand',
         '\App\Console\Commands\Generators\ProviderGeneratorCommand',
         '\App\Console\Commands\Generators\Migrations\CreateMigrationCommand',
+        '\App\Console\Commands\Generators\Migrations\RunMigrationCommand',
     ];
     
     /**

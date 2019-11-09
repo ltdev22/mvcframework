@@ -27,6 +27,7 @@ class Kernel
         '\App\Console\Commands\Generators\Migrations\RollbackMigrationCommand',
         '\App\Console\Commands\Generators\Migrations\StatusMigrationCommand',
         '\App\Console\Commands\Generators\Migrations\CreateSeedCommand',
+        '\App\Console\Commands\Generators\Migrations\RunSeedCommand',
     ];
     
     /**

@@ -24,6 +24,7 @@ class Kernel
         '\App\Console\Commands\Generators\ProviderGeneratorCommand',
         '\App\Console\Commands\Generators\Migrations\CreateMigrationCommand',
         '\App\Console\Commands\Generators\Migrations\RunMigrationCommand',
+        '\App\Console\Commands\Generators\Migrations\RollbackMigrationCommand',
     ];
     
     /**

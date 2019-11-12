@@ -6,6 +6,7 @@ use App\Controllers\Controller;
 use Psr\Http\Message\RequestInterface;
 use Zend\Diactoros\Response;
 use App\Wrappers\View;
+use Doctrine\ORM\EntityManager;
 
 class HomeController extends Controller
 {
@@ -22,9 +23,10 @@ class HomeController extends Controller
      * @param   \App\Wrappers\View     $view
      * @return  void
      */
-    function __construct(View $view)
+    function __construct(View $view, EntityManager $db)
     {
         $this->view = $view;
+        $this->db = $db;
     }
 
     /**
@@ -36,7 +38,10 @@ class HomeController extends Controller
     public function index(RequestInterface $request) : Response
     {
         $test = 'foo';
+        $user = $this->db->getRepository(\App\Models\User::class)->find(1);
 
-        return $this->view->render('home.twig', compact('test'));
+        // dd($user);
+
+        return $this->view->render('home.twig', compact('test', 'user'));
     }
 }

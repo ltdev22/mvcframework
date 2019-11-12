@@ -7,6 +7,7 @@ return [
     // Register any serviceProviders here ...
     'providers' => [
         '\App\Providers\AppServiceProvider',
+        '\App\Providers\DatabaseServiceProvider',
         '\App\Providers\ViewServiceProvider',
     ],
 ];

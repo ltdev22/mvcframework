@@ -62,4 +62,20 @@ class User extends Model
     {
         return $this->first_name . ' ' . $this->last_name;
     }
+
+    public function __get($first_name)
+    {
+        if (property_exists($this, $first_name)) {
+            return $this->first_name;
+        }
+    }
+
+    public function __isset($first_name)
+    {
+        if (property_exists($this, $first_name)) {
+            return true;
+        }
+
+        return false;
+    }
 }

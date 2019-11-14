@@ -1,12 +1,12 @@
 <?php
 
-namespace DummyNamespace;
+namespace App\Controllers\Auth;
 
 use App\Controllers\Controller;
 use Psr\Http\Message\RequestInterface;
 use App\Wrappers\View;
 
-class DummyController extends Controller
+class LoginController extends Controller
 {
     /**
      * The view instance injected in routes.php
@@ -27,13 +27,13 @@ class DummyController extends Controller
     }
 
     /**
-     * [index description]
+     * Respond with the homepage.
      *
      * @param   Psr\Http\Message\RequestInterface     $request
      * @return  Zend\Diactoros\Response
      */
     public function index(RequestInterface $request)
     {
-        //
+        return $this->view->render('auth/login.twig');
     }
 }

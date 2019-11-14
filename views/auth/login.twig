@@ -1,0 +1,29 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+    
+    <div class="row">
+        <div class="column column-40 column-offset-25">
+            <h1>Sign In</h1>
+
+            <form>
+                <fieldset>
+                    <label for="email">Email:</label>
+                    <input type="text" name="email" id="email" placeholder="you-email@example.com" />
+
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" />
+            
+                    <input type="checkbox" name="remember" id="remember">
+                    <label class="label-inline" for="remember">Remember me</label>
+                    <div class="clearfix"></div>
+
+                    <button class="button-primary" type="submit">Sign In</button>
+                </fieldset>
+            </form>
+        </div>
+    </div><!-- /.row -->
+
+
+{% endblock %}

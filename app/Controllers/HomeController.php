@@ -33,7 +33,7 @@ class HomeController extends Controller
      * @param   Psr\Http\Message\RequestInterface     $request
      * @return  Zend\Diactoros\Response
      */
-    public function index(RequestInterface $request) : Response
+    public function index(RequestInterface $request)
     {
         return $this->view->render('home.twig');
     }

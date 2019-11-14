@@ -45,9 +45,9 @@ if (!function_exists('redirectTo')) {
      * Redirects to a given url.
      *
      * @var     string  $path   The path requested
-     * @return  string
+     * @return  RedirectResponse
      */
-    function redirectTo(string $path): string
+    function redirectTo(string $path)
     {
         return new \Zend\Diactoros\Response\RedirectResponse($path);
     }

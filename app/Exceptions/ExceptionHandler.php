@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use ReflectionClass;
 use App\Exceptions\ValidationFailedException;
+use App\Session\SessionStoreInterface;
 
 class ExceptionHandler
 {
@@ -16,14 +17,22 @@ class ExceptionHandler
     protected $exception;
 
     /**
+     * The session store type being injected within the exception
+     *
+     * @var object
+     */
+    protected $session;
+
+    /**
      * Create a new instence.
      *
      * @param Exception $exception
      * @return void
      */
-    public function __construct(Exception $exception)
+    public function __construct(Exception $exception, SessionStoreInterface $session)
     {
         $this->exception = $exception;
+        $this->session = $session;
     }
 
     /**
@@ -53,7 +62,12 @@ class ExceptionHandler
      */
     protected function handleValidationFailedException(ValidationFailedException $e)
     {
-        // @TODO Session set
+        // Session set
+        $this->session->set([
+            'old' => $e->getOldInput(),
+            'errors' => $e->getErrors(),
+        ]);
+
         // Redirect the user back
         return redirectTo($e->getBack());
     }

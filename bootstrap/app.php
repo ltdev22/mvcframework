@@ -32,7 +32,10 @@ require_once base_path('/routes/web.php');
 try {
     $response = $route->dispatch($container->get('request'));
 } catch (\Exception $e) {
-    $handler = new \App\Exceptions\ExceptionHandler($e);
+    $handler = new \App\Exceptions\ExceptionHandler(
+        $e,
+        $container->get(\App\Session\SessionStoreInterface::class)
+    );
 
     $response = $handler->respond();
 }

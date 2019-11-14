@@ -36,4 +36,13 @@ class LoginController extends Controller
     {
         return $this->view->render('auth/login.twig');
     }
+
+    public function login(RequestInterface $request)
+    {
+        $this->validate($request, [
+            'email'     => ['required', 'email'],
+            'password'  => ['required'],
+        ]);
+        dd('You are logged in!');
+    }
 }

@@ -27,4 +27,10 @@ $route = $container->get(\League\Route\Router::class);
 
 require_once base_path('/routes/web.php');
 
-$response = $route->dispatch($container->get('request'));
+// Dispatch the request. If by any reason fails we will catch every exception
+// we throw within the entire framework here
+try {
+    $response = $route->dispatch($container->get('request'));
+} catch (\Exception $e) {
+    dd($e);
+}

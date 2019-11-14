@@ -32,5 +32,7 @@ require_once base_path('/routes/web.php');
 try {
     $response = $route->dispatch($container->get('request'));
 } catch (\Exception $e) {
-    dd($e);
+    $handler = new \App\Exceptions\ExceptionHandler($e);
+
+    $response = $handler->respond();
 }

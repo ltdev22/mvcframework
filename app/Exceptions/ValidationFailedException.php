@@ -40,9 +40,9 @@ class ValidationFailedException extends Exception
      * This would be the url from which we submited the form and failed 
      * the validation, so we need to redirect back.
      *
-     * @return [type] [description]
+     * @return string
      */
-    public function getBackPath()
+    public function getBack(): string
     {
         return $this->request->getUri()->getPath();
     }
@@ -50,9 +50,9 @@ class ValidationFailedException extends Exception
     /**
      * Return the old input we submited to the form and failed the validation.
      *
-     * @return [type] [description]
+     * @return array
      */
-    public function getOldInput()
+    public function getOldInput(): array
     {
         return $this->request->getParsedBody();
     }

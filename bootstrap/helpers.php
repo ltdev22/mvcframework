@@ -40,6 +40,19 @@ if (!function_exists('base_path')) {
     }
 }
 
+if (!function_exists('redirectTo')) {
+    /**
+     * Redirects to a given url.
+     *
+     * @var     string  $path   The path requested
+     * @return  string
+     */
+    function redirectTo(string $path): string
+    {
+        return new \Zend\Diactoros\Response\RedirectResponse($path);
+    }
+}
+
 /**
  * Laravel's helpers
  *

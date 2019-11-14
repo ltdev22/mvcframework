@@ -7,7 +7,7 @@ RUN docker-php-ext-install pdo_mysql \
                             mysqli \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
-    && a2enmod rewrite
+    && a2enmod rewrite negotiation
 
 # Install Composer programmatically (https://getcomposer.org/doc/faqs/how-to-install-composer-programmatically.md)
 COPY docker/composer-installer.sh /usr/local/bin/composer-installer

@@ -15,5 +15,6 @@ return [
     // Register any middleware here ...
     'middleware' => [
         'App\Middleware\ShareValidationErrors',
+        'App\Middleware\ClearValidationErrors',
     ],
 ];

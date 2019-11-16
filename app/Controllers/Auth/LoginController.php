@@ -7,6 +7,7 @@ use Psr\Http\Message\RequestInterface;
 use League\Route\Router;
 use App\Utilities\View;
 use App\Auth\Auth;
+use App\Session\FlashSession;
 
 class LoginController extends Controller
 {
@@ -32,18 +33,32 @@ class LoginController extends Controller
     protected $route;
 
     /**
+     * The flash session instance.
+     *
+     * @var \App\Session\FlashSession
+     */
+    protected $flash;
+
+    /**
      * Instatiate the controller
      *
      * @param   \App\Utilities\View     $view
      * @param   \App\Auth\Auth          $auth
      * @param   \League\Route\Router    $route
+     * @param   \App\Session\FlashSession $flash
      * @return  void
      */
-    public function __construct(View $view, Auth $auth, Router $route)
+    public function __construct(
+        View $view,
+        Auth $auth,
+        Router $route,
+        FlashSession $flash
+    )
     {
         $this->view = $view;
         $this->auth = $auth;
         $this->route = $route;
+        $this->flash = $flash;
     }
 
     /**
@@ -73,7 +88,9 @@ class LoginController extends Controller
 
         // Try and login the user
         if(!$this->auth->attempt($data['email'], $data['password'])) {
-            dd('Failed to login. TODO flash a message');
+            $this->flash->now('error', 'Could not signed you in with those credentials.');
+
+            return redirectTo($request->getUri()->getPath());
         }
 
         // Redirect to home page

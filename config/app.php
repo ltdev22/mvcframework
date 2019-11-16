@@ -7,10 +7,11 @@ return [
     // Register any serviceProviders here ...
     'providers' => [
         '\App\Providers\AppServiceProvider',
-        '\App\Providers\AuthServiceProvider',
         '\App\Providers\DatabaseServiceProvider',
+        '\App\Providers\AuthServiceProvider',
         '\App\Providers\HashServiceProvider',
         '\App\Providers\SessionServiceProvider',
+        '\App\Providers\FlashSessionServiceProvider',
         '\App\Providers\ViewServiceProvider',
         '\App\Providers\ViewShareServiceProvider',
     ],

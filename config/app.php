@@ -10,6 +10,7 @@ return [
         '\App\Providers\DatabaseServiceProvider',
         '\App\Providers\SessionServiceProvider',
         '\App\Providers\ViewServiceProvider',
+        '\App\Providers\ViewShareServiceProvider',
     ],
 
     // Register any middleware here ...

@@ -18,4 +18,16 @@ abstract class Model
         }
         return false;
     }
+
+    /**
+     * Update db columns
+     *
+     * @param  array  $data
+     */
+    public function update(array $data)
+    {
+        foreach ($data as $column => $value) {
+            $this->{$column} = $value;
+        }
+    }
 }

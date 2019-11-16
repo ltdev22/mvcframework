@@ -64,6 +64,10 @@ class Auth
             return false;
         }
 
+        if ($this->needsRehash($user)) {
+            $this->rehashPassword($user, $password);
+        }
+
         // The user can login, so lets keep him in session
         $this->setUserSession($user);
 
@@ -128,6 +132,34 @@ class Auth
     protected function hasValidCredentials(User $user, string $password): bool
     {
         return $this->hash->check($password, $user->password);
+    }
+
+    /**
+     * Do we need to rehash the user's password?
+     *
+     * @param  \App\Models\User   $user
+     * @return bool
+     */
+    protected function needsRehash(User $user): bool
+    {
+        return $this->hash->needsRehash($user->password);
+    }
+
+    /**
+     * Rehash user's password.
+     *
+     * @param  \App\Models\User   $user
+     * @param  string             $password
+     */
+    protected function rehashPassword(User $user, string $password): bool
+    {
+        $this->db->getRepository(User::class)
+                    ->find($user->id)
+                    ->update([
+                        'password' => $this->hash->create($password),
+                    ]);
+
+        $this->db->flush();
     }
 
     /**

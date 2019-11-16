@@ -71,6 +71,16 @@ class Auth
     }
 
     /**
+     * Do we have a logged in user?
+     *
+     * @return bool
+     */
+    public function check(): bool
+    {
+        return $this->hasUserInSession();
+    }
+
+    /**
      * Return the current loggedin user.
      *
      * @return \App\Models\User

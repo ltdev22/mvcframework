@@ -5,6 +5,7 @@ namespace App\Providers;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Container\ServiceProvider\BootableServiceProviderInterface;
 use App\Utilities\View;
+use App\Auth\Auth;
 
 class ViewShareServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
 {
@@ -18,6 +19,7 @@ class ViewShareServiceProvider extends AbstractServiceProvider implements Bootab
         $container = $this->getContainer();
 
         $container->get(View::class)->share([
+            'auth' => $container->get(Auth::class),
             'config' => $container->get('config'),
         ]);
     }

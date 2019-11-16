@@ -4,14 +4,19 @@
         <div class="main-nav nav">
             <div class="menu-items">
                 <a href="{{ route('home') }}" class="active">Home</a>
-                <a href="#news">News</a>
-                <a href="#contact">Contact</a>
-                <a href="#about">About</a>
+                {% if auth.check %}
+                    <a href="#">Dashboard</a>
+                {% endif %}
             </div>
         </div>
         <div class="nav nav-right">
-            <a href="{{ route('auth.login') }}">Sign In</a>
-            <a href="#news">News</a>
+            {% if auth.check %}
+                <a href="#">Hello, {{ auth.user.first_name }}</a>
+                <a href="#">Log Out</a>
+            {% else %}
+                <a href="{{ route('auth.login') }}">Sign In</a>
+                <a href="#">Sign Up</a>
+            {% endif %}
         </div>
     </div>
 </nav><!-- /nav -->

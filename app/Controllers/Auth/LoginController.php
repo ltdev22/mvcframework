@@ -4,7 +4,7 @@ namespace App\Controllers\Auth;
 
 use App\Controllers\Controller;
 use Psr\Http\Message\RequestInterface;
-use App\Wrappers\View;
+use App\Utilities\View;
 
 class LoginController extends Controller
 {
@@ -18,7 +18,7 @@ class LoginController extends Controller
     /**
      * Instatiate the controller
      *
-     * @param   \App\Wrappers\View     $view
+     * @param   \App\Utilities\View     $view
      * @return  void
      */
     public function __construct(View $view)

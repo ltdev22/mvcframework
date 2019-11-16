@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Container\ServiceProvider\BootableServiceProviderInterface;
-use App\Wrappers\View;
+use App\Utilities\View;
 
 class ViewShareServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
 {

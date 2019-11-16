@@ -6,8 +6,8 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment as Twig;
-use App\Wrappers\View;
-use App\Wrappers\Extensions\PathExtension;
+use App\Utilities\View;
+use App\Utilities\Extensions\PathExtension;
 use League\Route\Router;
 
 class ViewServiceProvider extends AbstractServiceProvider

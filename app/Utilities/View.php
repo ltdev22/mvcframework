@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Wrappers;
+namespace App\Utilities;
 
 use Twig\Environment as Twig;
 use Zend\Diactoros\Response;

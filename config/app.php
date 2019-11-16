@@ -11,4 +11,9 @@ return [
         '\App\Providers\SessionServiceProvider',
         '\App\Providers\ViewServiceProvider',
     ],
+
+    // Register any middleware here ...
+    'middleware' => [
+        'App\Middleware\ShareValidationErrors',
+    ],
 ];

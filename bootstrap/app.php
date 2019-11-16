@@ -25,6 +25,7 @@ require_once base_path('/bootstrap/container.php');
 // Finally we can dispatch the route along with both the request and the response
 $route = $container->get(\League\Route\Router::class);
 
+require_once base_path('/bootstrap/middleware.php');
 require_once base_path('/routes/web.php');
 
 // Dispatch the request. If by any reason fails we will catch every exception

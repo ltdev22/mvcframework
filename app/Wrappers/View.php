@@ -44,4 +44,17 @@ class View
 
         return $response;
     }
+
+    /**
+     * Array of data we need to share within out view.
+     *
+     * @param  array $data
+     * @return [type]           [description]
+     */
+    public function share(array $data)
+    {
+        foreach ($data as $key => $value) {
+            $this->twig->addGlobal($key, $value);
+        }
+    }
 }

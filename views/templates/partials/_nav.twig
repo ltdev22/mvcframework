@@ -1,16 +1,16 @@
 <nav class="topnav" id="topnav">
     <div class="container">
-        <a href="#" class="nav-brand">{{ config.get('app.name') }}</a>
+        <a href="{{ route('home') }}" class="nav-brand">{{ config.get('app.name') }}</a>
         <div class="main-nav nav">
             <div class="menu-items">
-                <a href="#home" class="active">Home</a>
+                <a href="{{ route('home') }}" class="active">Home</a>
                 <a href="#news">News</a>
                 <a href="#contact">Contact</a>
                 <a href="#about">About</a>
             </div>
         </div>
         <div class="nav nav-right">
-            <a href="#home">Home</a>
+            <a href="{{ route('auth.login') }}">Sign In</a>
             <a href="#news">News</a>
         </div>
     </div>

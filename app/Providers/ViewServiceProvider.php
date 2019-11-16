@@ -7,6 +7,8 @@ use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment as Twig;
 use App\Wrappers\View;
+use App\Wrappers\Extensions\PathExtension;
+use League\Route\Router;
 
 class ViewServiceProvider extends AbstractServiceProvider
 {
@@ -31,7 +33,7 @@ class ViewServiceProvider extends AbstractServiceProvider
         $config = $container->get('config');
 
         // Create a wrapper view class to inject into the controllers
-        $container->share(View::class, function () use ($config) {
+        $container->share(View::class, function () use ($config, $container) {
 
             // Set up Twig as per documentation 
             // @see https://twig.symfony.com/doc/2.x/api.html
@@ -46,6 +48,10 @@ class ViewServiceProvider extends AbstractServiceProvider
             if ($config->get('app.debug')) {
                 $twig->addExtension(new DebugExtension());
             }
+
+            $twig->addExtension(new PathExtension(
+                $container->get(Router::class)
+            ));
 
             return new View($twig);
         });

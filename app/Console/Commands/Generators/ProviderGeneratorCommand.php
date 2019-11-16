@@ -35,7 +35,7 @@ class ProviderGeneratorCommand extends Command
      * 
      * @return void
      */
-    public function handle(InputInterface $input, OutputInterface$output)
+    public function handle(InputInterface $input, OutputInterface $output)
     {
         // Generate the stub
         $stub = $this->generateStub('provider', [

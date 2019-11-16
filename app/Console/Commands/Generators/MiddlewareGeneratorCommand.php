@@ -35,47 +35,20 @@ class MiddlewareGeneratorCommand extends Command
      * 
      * @return void
      */
-    public function handle(InputInterface $input, OutputInterface$output)
+    public function handle(InputInterface $input, OutputInterface $output)
     {
-        // Grab the base middleware and set namespacing
-        $middlewareBase = base_path('/app/Middleware');
-        $middlewarePath = $middlewareBase . '/';
-        $namespace = 'App\\Middleware';
+        $ret = $this->getGenerateBaseFormat($input, $output, 'Middleware');
 
-        // Extract each part of the file path and grab the middleware name
-        $fileParts = explode('\\', $this->argument('name'));
-        $fileName = array_pop($fileParts);
-
-        // Clean file path
-        $cleanPath = implode('/', $fileParts);
-
-        // Do we have any sub directories we need to add?
-        if (count($fileParts) >= 1) {
-            $middlewarePath = $middlewarePath . $cleanPath;
-            
-            // Build the namespace
-            $namespace = $namespace . '\\' . str_replace('/', '\\', $cleanPath);
-
-            // Make directories
-            if (!is_dir($middlewarePath)) {
-                mkdir($middlewarePath, 0755, true);
-            }
-        }
-
-        // Set the path we want to put the new middleware and
-        // create the file if it doesn't already exist
-        $target = $middlewarePath . '/' . $fileName . '.php';
-
-        if (file_exists($target)) {
+        if (file_exists($ret['target'])) {
             return $this->error('The middleware already exists.');
         }
 
         $stub = $this->generateStub('middleware', [
-            'DummyNamespace' => $namespace,
-            'DummyMiddleware' => $fileName,
+            'DummyNamespace' => $ret['namespace'],
+            'DummyMiddleware' => $ret['fileName'],
         ]);
         
-        file_put_contents($target, $stub);
+        file_put_contents($ret['target'], $stub);
 
         return $this->info('The middleware has been generated.');
     }

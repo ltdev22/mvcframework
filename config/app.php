@@ -8,6 +8,7 @@ return [
     'providers' => [
         '\App\Providers\AppServiceProvider',
         '\App\Providers\DatabaseServiceProvider',
+        '\App\Providers\HashServiceProvider',
         '\App\Providers\SessionServiceProvider',
         '\App\Providers\ViewServiceProvider',
         '\App\Providers\ViewShareServiceProvider',

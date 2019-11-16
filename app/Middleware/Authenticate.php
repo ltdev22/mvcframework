@@ -1,29 +1,31 @@
 <?php
 
-namespace DummyNamespace;
+namespace App\Middleware;
 
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use App\Auth\Auth;
 
-class DummyMiddleware implements MiddlewareInterface
+class Authenticate implements MiddlewareInterface
 {
-    /** 
-     * [$foo description]
+    /**
+     * The auth instance.
      *
-     * @var [type]
+     * @var \App\Auth\Auth
      */
-    protected $foo;
+    protected $auth;
 
     /**
-     * [__construct description]
+     * Create new instance.
      *
-     * @param [type] $foo [description]
+     * @param  \App\Auth\Auth $auth
+     * @return  void
      */
-    public function __construct($foo)
+    public function __construct(Auth $auth)
     {
-        $this->foo = $foo;
+        $this->auth = $auth;
     }
 
     /**
@@ -34,6 +36,15 @@ class DummyMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        // Persist the logged in user
+        if ($this->auth->hasUserInSession()) {
+            try {
+                $this->auth->setUserFromSession();
+            } catch (\Exception $e) {
+                // @TODO $this->auth->logout();
+            }
+        }
+
         // Invoke the rest of the middleware stack and your controller resulting
         // in a returned response object
         $response = $handler->handle($request);

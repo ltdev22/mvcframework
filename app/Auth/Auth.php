@@ -29,6 +29,13 @@ class Auth
      */
     protected $session;
 
+    /**
+     * The loggedin user instance.
+     *
+     * @var \App\Models\User
+     */
+    protected $user;
+
     /***/
     public function __construct(
         EntityManager $db,
@@ -64,6 +71,44 @@ class Auth
     }
 
     /**
+     * Return the current loggedin user.
+     *
+     * @return \App\Models\User
+     */
+    public function user(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * Do we have a user stored in session?
+     *
+     * @return boolean
+     */
+    public function hasUserInSession(): bool
+    {
+        return $this->session->exists($this->key());
+    }
+
+    /**
+     * Persist the logged in user.
+     *
+     * @return  void
+     */
+    public function setUserFromSession()
+    {
+        // Get the user by its session ID
+        $user = $this->getById($this->session->get($this->key()));
+
+        if (!$user) {
+            throw new \Exception('Auth user not found.');
+        }
+
+        // Set the user as Auth user
+        $this->user = $user;
+    }
+
+    /**
      * Does the user have valid credentials to login?
      *
      * @param  \App\Models\User  $user
@@ -84,7 +129,29 @@ class Auth
     {
         // REMEMBER: Very careful what user data you 're going to store in session!
         // This could cause many vulnerability issues!
-        $this->session->set('id', $user->id);
+        $this->session->set($this->key(), $user->id);
+    }
+
+    /**
+     * Return the key we keep in session for the logged in user.
+     * Typically this would be the user ID.
+     *
+     * @return string
+     */
+    protected function key(): string
+    {
+        return 'id';
+    }
+
+    /**
+     * Return the user record by the ID.
+     *
+     * @param  int   $id
+     * @return \App\Models\User|null
+     */
+    protected function getById(int $id): ?User
+    {
+        return $this->db->getRepository(User::class)->find($id);
     }
 
     /**

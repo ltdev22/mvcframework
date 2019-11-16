@@ -8,16 +8,28 @@
 
             <form action="/auth/login" method="POST">
                 <fieldset>
-                    <label for="email">Email:</label>
-                    <input type="text" name="email" id="email" placeholder="you-email@example.com" />
+                    <div class="form-field">
+                        <label for="email">Email:</label>
+                        <input type="text" name="email" id="email" placeholder="you-email@example.com" />
+                        {% if errors.email %}
+                            <span class="invalid-feedback">{{ errors.email | first }}</span>
+                        {% endif %}
+                    </div>
 
+                    <div class="form-field">
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="password" />
+                        {% if errors.password %}
+                            <span class="invalid-feedback">{{ errors.password | first }}</span>
+                        {% endif %}
+                    </div>
 
-                    <label for="password">Password:</label>
-                    <input type="password" name="password" id="password" />
-            
-                    <input type="checkbox" name="remember" id="remember">
-                    <label class="label-inline" for="remember">Remember me</label>
-                    <div class="clearfix"></div>
+                    
+                    <div class="form-field">
+                        <input type="checkbox" name="remember" id="remember">
+                        <label class="label-inline" for="remember">Remember me</label>
+                        <div class="clearfix"></div>
+                    </div>
 
                     <button class="button-primary" type="submit">Sign In</button>
                 </fieldset>

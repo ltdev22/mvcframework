@@ -1,0 +1,14 @@
+/* CSS styles */
+
+/* Form styles */
+input, select, textarea {
+    margin-bottom: 0;
+}
+
+.form-field {
+    margin-bottom: 1.5rem;
+}
+
+.form-field span.invalid-feedback {
+    color: red;
+}

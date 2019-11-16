@@ -29,7 +29,6 @@ abstract class Controller
         }
 
         // Return the data we used to validate so we can carry on
-        dd('logged in!');
         return $request->getParsedBody();
     }
 }

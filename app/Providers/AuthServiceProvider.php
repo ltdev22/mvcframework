@@ -3,8 +3,12 @@
 namespace App\Providers;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
+use App\Auth\Auth;
+use App\Auth\Hashing\HasherInterface;
+use App\Session\SessionStoreInterface;
+use Doctrine\ORM\EntityManager;
 
-class DummyClass extends AbstractServiceProvider
+class AuthServiceProvider extends AbstractServiceProvider
 {
     /**
      * Array holding everything this service provider provides to the container.
@@ -12,7 +16,7 @@ class DummyClass extends AbstractServiceProvider
      * @var array
      */
     protected $provides = [
-        //
+        Auth::class,
     ];
 
     /**
@@ -24,5 +28,13 @@ class DummyClass extends AbstractServiceProvider
     public function register()
     {
         $container = $this->getContainer();
+
+        $container->share(Auth::class, function () use ($container) {
+            return new Auth(
+                $container->get(EntityManager::class),
+                $container->get(HasherInterface::class),
+                $container->get(SessionStoreInterface::class)
+            );
+        });
     }
 }

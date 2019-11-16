@@ -22,7 +22,7 @@ class HomeController extends Controller
      * @param   \App\Utilities\View     $view
      * @return  void
      */
-    function __construct(View $view)
+    public function __construct(View $view)
     {
         $this->view = $view;
     }

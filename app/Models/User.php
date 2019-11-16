@@ -52,30 +52,4 @@ class User extends Model
      * @remember_identifier @Column(type="string")
      */
     protected $remember_identifier;
-
-    /**
-     * Return user's full name
-     * 
-     * @return string
-     */
-    public function getFullName(): string
-    {
-        return $this->first_name . ' ' . $this->last_name;
-    }
-
-    public function __get($first_name)
-    {
-        if (property_exists($this, $first_name)) {
-            return $this->first_name;
-        }
-    }
-
-    public function __isset($first_name)
-    {
-        if (property_exists($this, $first_name)) {
-            return true;
-        }
-
-        return false;
-    }
 }

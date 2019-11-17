@@ -7,6 +7,7 @@ use League\Container\ServiceProvider\BootableServiceProviderInterface;
 use App\Utilities\View;
 use App\Auth\Auth;
 use App\Session\FlashSession;
+use App\Security\Csrf;
 
 class ViewShareServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
 {
@@ -23,6 +24,7 @@ class ViewShareServiceProvider extends AbstractServiceProvider implements Bootab
             'auth' => $container->get(Auth::class),
             'config' => $container->get('config'),
             'flash' => $container->get(FlashSession::class),
+            'csrf' => $container->get(Csrf::class),
         ]);
     }
 

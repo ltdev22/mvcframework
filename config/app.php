@@ -9,6 +9,7 @@ return [
         '\App\Providers\AppServiceProvider',
         '\App\Providers\DatabaseServiceProvider',
         '\App\Providers\AuthServiceProvider',
+        '\App\Providers\CsrfServiceProvider',
         '\App\Providers\HashServiceProvider',
         '\App\Providers\SessionServiceProvider',
         '\App\Providers\FlashSessionServiceProvider',

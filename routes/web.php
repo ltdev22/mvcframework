@@ -2,13 +2,17 @@
 
 /**
  * Web routes are set here
+ * A basic example would be: $route->get('/foo', 'App\Controllers\FooController::fooMethod')->setName('foo');
  *
- * Example would be:
- * - $route->get('/foo', 'App\Controllers\FooController::fooMethod')->setName('foo');
- *
+ * @see https://route.thephpleague.com/4.x/routes/
  */
 
 $route->get('/', 'App\Controllers\HomeController::index')->setName('home');
+
+// Add here any routes for pages require authorization to access them
+$route->group('', function ($route) {
+    $route->get('/dashboard', 'App\Controllers\DashboardController::index')->setName('dashboard');
+})->middleware($container->get(\App\Middleware\Authenticated::class));
 
 /* Auth routes */
 $route->group('/auth', function ($route) {

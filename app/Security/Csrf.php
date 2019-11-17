@@ -56,6 +56,17 @@ class Csrf
     }
 
     /**
+     * Is the request token valid?
+     *
+     * @param  string $token
+     * @return boolean
+     */
+    public function tokenIsValid(string $token): bool
+    {
+        return $token === $this->session->get($this->key());
+    }
+
+    /**
      * Return the csrf token stored in session.
      *
      * @return string

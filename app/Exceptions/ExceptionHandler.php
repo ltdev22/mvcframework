@@ -5,34 +5,47 @@ namespace App\Exceptions;
 use Exception;
 use ReflectionClass;
 use App\Exceptions\ValidationFailedException;
+use App\Exceptions\CsrfTokenException;
 use App\Session\SessionStoreInterface;
+use App\Utilities\View;
+use Psr\Http\Message\ResponseInterface;
 
 class ExceptionHandler
 {
     /**
      * The exception that is thrown.
      *
-     * @var object
+     * @var \Exception
      */
     protected $exception;
 
     /**
      * The session store type being injected within the exception
      *
-     * @var object
+     * @var \App\Session\SessionStoreInterface
      */
     protected $session;
 
     /**
+     * The view instance.
+     *
+     * @var \App\Utilities\View
+     */
+    protected $view;
+
+    /**
      * Create a new instence.
      *
-     * @param Exception $exception
+     * @param Exception                 $exception
+     * @param SessionStoreInterface     $session
+     * @param View                      $view
      * @return void
      */
-    public function __construct(Exception $exception, SessionStoreInterface $session)
+    public function __construct(Exception $exception, SessionStoreInterface $session, View $view)
     {
         $this->exception = $exception;
         $this->session = $session;
+        $this->view = $view;
     }
 
     /**
@@ -70,6 +83,17 @@ class ExceptionHandler
 
         // Redirect the user back
         return redirectTo($e->getBack());
+    }
+
+    /**
+     * Handle the CsrfTokenException.
+     *
+     * @param  CsrfTokenException $e
+     * @return \Zend\Diactoros\Response\RedirectResponse
+     */
+    protected function handleCsrfTokenException(CsrfTokenException $e)
+    {
+        return $this->view->render('errors/csrf.twig');
     }
 
     /**

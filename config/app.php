@@ -22,5 +22,6 @@ return [
         'App\Middleware\Authenticate',
         'App\Middleware\ShareValidationErrors',
         'App\Middleware\ClearValidationErrors',
+        'App\Middleware\CsrfGuard',
     ],
 ];

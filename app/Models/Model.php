@@ -30,4 +30,14 @@ abstract class Model
             $this->{$column} = $value;
         }
     }
+
+    /**
+     * Fill a new model with data that we need in order to save.
+     *
+     * @param  array  $data
+     */
+    public function fill(array $data)
+    {
+        $this->update($data);
+    }
 }

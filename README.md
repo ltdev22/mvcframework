@@ -73,6 +73,7 @@ by Cmder
 - To generate a new service provider: `$ php cmder make:provider FooProvider`. __Note:__ running this command will only generate the new provider class. In order the provider to work within the framework you 'll need to register it within the `providers` list located in the `config/app.php`
 - To generate a new middleware: `$ php cmder make:middleware FooMiddleware`  or `$ php cmder make:middleware Some\\Nested\\FooMiddleware`. __Note:__ running this command will only generate the new middleware class. In order the middleware to work within the framework you 'll need to register it within the `middleware` list located in the `config/app.php`
 - To generate a new custom command: `$ php cmder make:console FooCommand`
+- To generate a new exception: `$ php cmder make:exception FooException`. __Note:__ running this command will only generate the new exception. You can use `App\Exceptions\ExceptionHandler` to handle your custom exception with a custom method (see other exceptions for ref) otherwise will default to `unhandledException`.
 - To run migration and seed commands please refer to the [Migrations](https://github.com/ltdev22/mvcframework#migrations) section for more details
 
 

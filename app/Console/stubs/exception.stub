@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Exceptions;
+
+use Exception;
+
+class DummyException extends Exception
+{
+    /**
+     * [$foo description]
+     *
+     * @var [type]
+     */
+    protected $foo;
+
+    /**
+     * [__construct description]
+     *
+     * @param [type] $foo
+     */
+    public function __construct($foo)
+    {
+        $this->foo = $foo;
+    }
+}

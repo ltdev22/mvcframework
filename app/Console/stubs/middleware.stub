@@ -9,7 +9,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class DummyMiddleware implements MiddlewareInterface
 {
-    /** 
+    /**
      * [$foo description]
      *
      * @var [type]

@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ProviderGeneratorCommand extends Command
+class ExceptionGeneratorCommand extends Command
 {
     use GeneratableTrait;
 
@@ -18,14 +18,14 @@ class ProviderGeneratorCommand extends Command
      *
      * @param string
      */
-    protected $command = 'make:provider';
+    protected $command = 'make:exception';
 
     /**
      * The description of the command.
      *
      * @param string
      */
-    protected $description = 'Generate a new provider command.';
+    protected $description = 'Generate a new exception command.';
 
     /**
      * Handle the execution of the command.
@@ -38,21 +38,21 @@ class ProviderGeneratorCommand extends Command
     public function handle(InputInterface $input, OutputInterface $output)
     {
         // Generate the stub
-        $stub = $this->generateStub('provider', [
-            'DummyClass' => $this->argument('name'),
+        $stub = $this->generateStub('exception', [
+            'DummyException' => $this->argument('name'),
         ]);
 
         // Find where we want to place the new file and
         // create the new file if it doesn't already exist
-        $target = base_path('/app/Providers/' . $this->argument('name') . '.php');
+        $target = base_path('/app/Exceptions/' . $this->argument('name') . '.php');
 
         if (file_exists($target)) {
-            return $this->error('The provider already exists.');
+            return $this->error('The exception already exists.');
         }
 
         file_put_contents($target, $stub);
 
-        return $this->info('The provider has been generated.');
+        return $this->info('The exception has been generated.');
     }
 
     /**
@@ -63,7 +63,7 @@ class ProviderGeneratorCommand extends Command
     protected function arguments(): array
     {
         return [
-            ['name', InputArgument::REQUIRED, 'The name of the provider to generate.'],
+            ['name', InputArgument::REQUIRED, 'The name of the exception to generate.'],
         ];
     }
 

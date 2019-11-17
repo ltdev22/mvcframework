@@ -19,4 +19,8 @@ $route->group('/auth', function ($route) {
 
     /* Logout */
     $route->post('/logout', 'App\Controllers\Auth\LogoutController::logout')->setName('auth.logout');
+
+    /* Register */
+    $route->get('/register', 'App\Controllers\Auth\RegisterController::index')->setName('auth.register');
+    $route->post('/register', 'App\Controllers\Auth\RegisterController::register');
 });

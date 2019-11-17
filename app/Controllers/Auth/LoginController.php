@@ -62,7 +62,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Respond with the homepage.
+     * Show the login page.
      *
      * @param   Psr\Http\Message\RequestInterface     $request
      * @return  Zend\Diactoros\Response

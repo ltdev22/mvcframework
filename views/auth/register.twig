@@ -1,0 +1,60 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="column column-40 column-offset-25">
+            <h1>Sign Up</h1>
+
+            <form action="{{ route('auth.register') }}" method="POST">
+                <input type="hidden" name="{{ csrf.key }}" value="{{ csrf.token }}" />
+                <fieldset>
+
+                    <div class="form-field">
+                        <label for="first_name">First Name:</label>
+                        <input type="text" name="first_name" id="first_name" />
+                        {% if errors.first_name %}
+                            <span class="invalid-feedback">{{ errors.first_name | first }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-field">
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" name="last_name" id="last_name" />
+                        {% if errors.last_name %}
+                            <span class="invalid-feedback">{{ errors.last_name | first }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-field">
+                        <label for="email">Email:</label>
+                        <input type="text" name="email" id="email" placeholder="you-email@example.com" />
+                        {% if errors.email %}
+                            <span class="invalid-feedback">{{ errors.email | first }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-field">
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="password" />
+                        {% if errors.password %}
+                            <span class="invalid-feedback">{{ errors.password | first }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-field">
+                        <label for="password_confirm">Re-type Password:</label>
+                        <input type="password" name="password_confirm" id="password_confirm" />
+                        {% if errors.password_confirm %}
+                            <span class="invalid-feedback">{{ errors.password_confirm | first }}</span>
+                        {% endif %}
+                    </div>
+
+                    <button class="button-primary" type="submit">Sign Up</button>
+                </fieldset>
+            </form>
+        </div>
+    </div><!-- /.row -->
+
+
+{% endblock %}

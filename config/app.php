@@ -14,6 +14,7 @@ return [
         '\App\Providers\SessionServiceProvider',
         '\App\Providers\FlashSessionServiceProvider',
         '\App\Providers\ViewServiceProvider',
+        '\App\Providers\ValidationRuleServiceProvider',
         '\App\Providers\ViewShareServiceProvider',
     ],
 

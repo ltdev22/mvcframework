@@ -6,6 +6,7 @@ use App\Controllers\Controller;
 use Psr\Http\Message\RequestInterface;
 use App\Utilities\View;
 use App\Auth\Auth;
+use App\Models\User;
 
 class RegisterController extends Controller
 {
@@ -55,6 +56,24 @@ class RegisterController extends Controller
      */
     public function register(RequestInterface $request)
     {
-        dd($request);
+        $data = $this->validateRegistration($request);
+    }
+
+    /**
+     * Return the validation.
+     *
+     * @param  RequestInterface $request
+     * @return [type]                    [description]
+     */
+    protected function validateRegistration(RequestInterface $request)
+    {
+        // Set the validation rules
+        return $this->validate($request, [
+            'first_name' => ['required'],
+            'last_name' => ['required'],
+            'email' => ['required', 'email', ['exists', User::class]],
+            'password' => ['required', ['lengthMin', 6]],
+            'password_confirm' => ['required', ['equals', 'password']],
+        ]);
     }
 }

@@ -12,7 +12,7 @@
         <div class="nav nav-right">
             {% if auth.check %}
                 <a href="#">Hello, {{ auth.user.first_name }}</a>
-                <a href="#">Log Out</a>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Log Out</a>
             {% else %}
                 <a href="{{ route('auth.login') }}">Sign In</a>
                 <a href="#">Sign Up</a>
@@ -20,3 +20,7 @@
         </div>
     </div>
 </nav><!-- /nav -->
+
+<form action="{{ route('auth.logout') }}" method="POST" id="logout-form" style="display:none;">
+    <input type="hidden" name="{{ csrf.key }}" value="{{ csrf.token }}">
+</form>

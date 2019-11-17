@@ -75,6 +75,16 @@ class Auth
     }
 
     /**
+     * Log the user out.
+     *
+     * @return void
+     */
+    public function logout()
+    {
+        $this->session->clear($this->key());
+    }
+
+    /**
      * Do we have a logged in user?
      *
      * @return bool

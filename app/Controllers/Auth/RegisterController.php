@@ -5,6 +5,7 @@ namespace App\Controllers\Auth;
 use App\Controllers\Controller;
 use Psr\Http\Message\RequestInterface;
 use App\Utilities\View;
+use App\Auth\Auth;
 use App\Auth\Hashing\HasherInterface;
 use App\Models\User;
 use League\Route\Router;
@@ -18,6 +19,13 @@ class RegisterController extends Controller
      * @var \Doctrine\ORM\EntityManager
      */
     protected $db;
+
+    /**
+     * The auth instance.
+     *
+     * @var \App\Auth\Auth
+     */
+    protected $auth;
 
     /**
      * The hash instance.
@@ -47,19 +55,22 @@ class RegisterController extends Controller
      * @param   \App\Auth\Hashing\HasherInterface       $hash
      * @param   \League\Route\Router                    $route
      * @param   \Doctrine\ORM\EntityManager             $db
+     * @param   \App\Auth\Auth                          $auth
      * @return  void
      */
     public function __construct(
         View $view,
         HasherInterface $hash,
         Router $route,
-        EntityManager $db
+        EntityManager $db,
+        Auth $auth
     )
     {
         $this->view = $view;
         $this->hash = $hash;
         $this->route = $route;
         $this->db = $db;
+        $this->auth = $auth;
     }
 
     /**
@@ -84,6 +95,8 @@ class RegisterController extends Controller
         $data = $this->validateRegistration($request);
 
         $user = $this->createUser($data);
+
+        $this->loginAfterRegistering($data);
 
         return redirectTo($this->route->getNamedRoute('home')->getPath());
     }
@@ -129,5 +142,32 @@ class RegisterController extends Controller
             'password' => ['required', ['lengthMin', 6]],
             'password_confirm' => ['required', ['equals', 'password']],
         ]);
+    }
+
+    /**
+     * Login automatically the new user after the registration.
+     *
+     * @param  array  $data
+     * @return array
+     */
+    protected function loginAfterRegistering(array $data)
+    {
+        $this->auth->attempt(
+            $data['email'],
+            $data['password']
+        );
+
+        return $this->loginAfterRegisteringExtend($data);
+    }
+
+    /**
+     * Do any additional stuff after logging in.
+     *
+     * @param  array  $data
+     * @return array
+     */
+    protected function loginAfterRegisteringExtend(array $data)
+    {
+        return $data;
     }
 }

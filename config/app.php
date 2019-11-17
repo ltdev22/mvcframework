@@ -12,6 +12,7 @@ return [
         '\App\Providers\CsrfServiceProvider',
         '\App\Providers\HashServiceProvider',
         '\App\Providers\SessionServiceProvider',
+        '\App\Providers\CookieServiceProvider',
         '\App\Providers\FlashSessionServiceProvider',
         '\App\Providers\ViewServiceProvider',
         '\App\Providers\ValidationRuleServiceProvider',

@@ -22,6 +22,7 @@ class Kernel
         '\App\Console\Commands\Generators\ConsoleGeneratorCommand',
         '\App\Console\Commands\Generators\ControllerGeneratorCommand',
         '\App\Console\Commands\Generators\ProviderGeneratorCommand',
+        '\App\Console\Commands\Generators\RuleGeneratorCommand',
         '\App\Console\Commands\Generators\ExceptionGeneratorCommand',
         '\App\Console\Commands\Generators\ModelGeneratorCommand',
         '\App\Console\Commands\Generators\MiddlewareGeneratorCommand',

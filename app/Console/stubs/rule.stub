@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Rules;
+
+use App\Rules\RuleInterface;
+
+class DummyClass implements RuleInterface
+{
+    /**
+     * {@inheritdoc}
+     *
+     * @see  \App\Rules\RuleInterface
+     */
+    public function validate(string $field, string $value, array $params, array $fields)
+    {
+        //
+    }
+}

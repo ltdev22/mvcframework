@@ -75,6 +75,7 @@ by Cmder
 - To generate a new custom command: `$ php cmder make:console FooCommand`
 - To generate a new exception: `$ php cmder make:exception FooException`. __Note:__ running this command will only generate the new exception. You can use `App\Exceptions\ExceptionHandler` to handle your custom exception with a custom method (see other exceptions for ref) otherwise will default to `unhandledException`.
 - To run migration and seed commands please refer to the [Migrations](https://github.com/ltdev22/mvcframework#migrations) section for more details
+- To generate a custom validation rule: `$php cmder make:rule FooRule`. __Note:__ running this command will only generate the new rule within `App\Rules`. You need to boot the new rule within `App\Providers\ValidationRuleServiceProvider`.
 
 
 ## Migrations

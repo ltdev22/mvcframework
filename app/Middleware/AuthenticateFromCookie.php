@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use App\Auth\Auth;
 
-class Authenticate implements MiddlewareInterface
+class AuthenticateFromCookie implements MiddlewareInterface
 {
     /**
      * The auth instance.
@@ -36,15 +36,19 @@ class Authenticate implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        // Persist the logged in user
-        if ($this->auth->hasUserInSession()) {
+        // If the user is already signed in, return the next callable middleware
+        if ($this->auth->check()) {
+            return $handler->handle($request);
+        }
+
+        // Does the user have a cookie set?
+        if ($this->auth->hasRecaller()) {
             try {
-                $this->auth->setUserFromSession();
+                $this->auth->setUserFromCookie();
             } catch (\Exception $e) {
                 $this->auth->logout();
             }
         }
-
         // Invoke the rest of the middleware stack and your controller resulting
         // in a returned response object
         $response = $handler->handle($request);

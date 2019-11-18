@@ -4,6 +4,8 @@ namespace App\Auth;
 
 class Recaller
 {
+    protected $separator = '|';
+
     /**
      * Generate the value that we will insert into the cookie.
      *
@@ -26,7 +28,18 @@ class Recaller
      */
     public function generateValueForCookie(string $identifier, string $token): string
     {
-        return $identifier . '|' . $token;
+        return $identifier . $this->separator . $token;
+    }
+
+    /**
+     * Split the cookie value.
+     *
+     * @param  string $value
+     * @return array
+     */
+    public function splitCookieValue(string $value): array
+    {
+        return explode($this->separator, $value);
     }
 
     /**
@@ -38,6 +51,18 @@ class Recaller
     public function getTokenHashed(string $token): string
     {
         return hash('sha256', $token);
+    }
+
+    /**
+     * Validate the token.
+     *
+     * @param  string $rawToken
+     * @param  string $hashedToken
+     * @return boolean
+     */
+    public function validateToken(string $rawToken, string $hashedToken): bool
+    {
+        return $this->getTokenHashed($rawToken) === $hashedToken;
     }
 
     /**

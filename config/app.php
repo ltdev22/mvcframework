@@ -22,6 +22,7 @@ return [
     // Register any middleware here ...
     'middleware' => [
         'App\Middleware\Authenticate',
+        'App\Middleware\AuthenticateFromCookie',
         'App\Middleware\ShareValidationErrors',
         'App\Middleware\ClearValidationErrors',
         'App\Middleware\CsrfGuard',

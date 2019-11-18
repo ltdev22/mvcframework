@@ -149,6 +149,42 @@ class Auth
     }
 
     /**
+     * Set a remember token if the user ticked the remember me.
+     *
+     * @param  User $user
+     */
+    protected function setRememberToken($user)
+    {
+        // Generate a unique identifier and unique token
+        // that we will insert into the cookie
+        list($identifier, $token) = $this->recaller->generate();
+
+        // Set the cookie
+        $this->cookie->set(
+            'remember',
+            $this->recaller->generateValueForCookie($identifier, $token)
+        );
+
+        // Save the identifier and the token in the db
+        $this->updateUser($user, [
+            'remember_identifier' => $identifier,
+            'remember_token' => $this->recaller->getTokenHashed($token),
+        ]);
+    }
+
+    /**
+     * Set the user session.
+     *
+     * @param \App\Models\User $user
+     */
+    protected function setUserSession(User $user)
+    {
+        // REMEMBER: Very careful what user data you 're going to store in session!
+        // This could cause many vulnerability issues!
+        $this->session->set($this->key(), $user->id);
+    }
+
+    /**
      * Persist the logged in user.
      *
      * @return  void
@@ -164,6 +200,39 @@ class Auth
 
         // Set the user as Auth user
         $this->user = $user;
+    }
+
+
+    public function setUserFromCookie()
+    {
+        // Get the identifier and the token
+        list($identifier, $token) = $this->recaller->splitCookieValue(
+            $this->cookie->get('remember')
+        );
+
+        // Get the user
+        $user = $this->db->getRepository(User::class)->findOneBy([
+            'remember_identifier' => $identifier,
+        ]);
+
+        // Validate the user's token
+        if (!$this->recaller->validateToken($token, $user->remember_token)) {
+            // @todo clear cookie
+            throw new \Exception("Error Processing Request", 1);
+        }
+
+        // Finally we can sing in the user
+        $this->setUserSession($user);
+    }
+
+    /**
+     * Do we have a 'remember' cookie set already?
+     *
+     * @return boolean
+     */
+    public function hasRecaller(): bool
+    {
+        return $this->cookie->exists('remember');
     }
 
     /**
@@ -199,42 +268,6 @@ class Auth
     {
         $this->updateUser($user, [
             'password' => $this->hash->create($password),
-        ]);
-    }
-
-    /**
-     * Set the user session.
-     *
-     * @param \App\Models\User $user
-     */
-    protected function setUserSession(User $user)
-    {
-        // REMEMBER: Very careful what user data you 're going to store in session!
-        // This could cause many vulnerability issues!
-        $this->session->set($this->key(), $user->id);
-    }
-
-    /**
-     * Set a remember token if the user ticked the remember me.
-     *
-     * @param  User $user
-     */
-    protected function setRememberToken($user)
-    {
-        // Generate a unique identifier and unique token
-        // that we will insert into the cookie
-        list($identifier, $token) = $this->recaller->generate();
-
-        // Set the cookie
-        $this->cookie->set(
-            'remember',
-            $this->recaller->generateValueForCookie($identifier, $token)
-        );
-
-        // Save the identifier and the token in the db
-        $this->updateUser($user, [
-            'remember_identifier' => $identifier,
-            'remember_token' => $this->recaller->getTokenHashed($token),
         ]);
     }
 

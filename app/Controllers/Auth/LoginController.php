@@ -87,7 +87,7 @@ class LoginController extends Controller
         ]);
 
         // Try and login the user
-        if(!$this->auth->attempt($data['email'], $data['password'])) {
+        if(!$this->auth->attempt($data['email'], $data['password'], isset($data['remember']))) {
             $this->flash->now('error', 'Could not signed you in with those credentials.');
 
             return redirectTo($request->getUri()->getPath());

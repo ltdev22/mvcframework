@@ -3,9 +3,11 @@
 namespace App\Auth;
 
 use Doctrine\ORM\EntityManager;
+use App\Auth\Recaller;
 use App\Models\User;
 use App\Auth\Hashing\HasherInterface;
 use App\Session\SessionStoreInterface;
+use App\Cookie\CookieJar;
 
 class Auth
 {
@@ -25,9 +27,23 @@ class Auth
     /**
      * The session instance.
      *
-     * @var \App\Auth\Hashing\HasherInterface
+     * @var \App\Session\SessionStoreInterface
      */
     protected $session;
+
+    /**
+     * The cookie instance.
+     *
+     * @var \App\Cookie\CookieJar
+     */
+    protected $cookie;
+
+    /**
+     * The recaller instance.
+     *
+     * @var \App\Auth\Recaller
+     */
+    protected $recaller;
 
     /**
      * The loggedin user instance.
@@ -36,26 +52,40 @@ class Auth
      */
     protected $user;
 
-    /***/
+    /**
+     * Create new auth instance.
+     *
+     * @param EntityManager         $db
+     * @param HasherInterface       $hash
+     * @param SessionStoreInterface $session
+     * @param Recaller              $recaller
+     * @param CookieJar             $cookie
+     * @return void
+     */
     public function __construct(
         EntityManager $db,
         HasherInterface $hash,
-        SessionStoreInterface $session
+        SessionStoreInterface $session,
+        Recaller $recaller,
+        CookieJar $cookie
     )
     {
         $this->db = $db;
         $this->hash = $hash;
         $this->session = $session;
+        $this->recaller = $recaller;
+        $this->cookie = $cookie;
     }
 
     /**
      * Try to log in the user.
      *
-     * @param  string $username
-     * @param  string $password
-     * @return bool
+     * @param  string  $username
+     * @param  string  $password
+     * @param  boolean $remember
+     * @return boolean
      */
-    public function attempt($username, $password): bool
+    public function attempt(string $username, string $password, bool $remember = false): bool
     {
         // Get the user and check the credetials given
         $user = $this->getByUsername($username);
@@ -70,6 +100,10 @@ class Auth
 
         // The user can login, so lets keep him in session
         $this->setUserSession($user);
+
+        if ($remember) {
+            $this->setRememberToken($user);
+        }
 
         return true;
     }
@@ -163,13 +197,9 @@ class Auth
      */
     protected function rehashPassword(User $user, string $password): bool
     {
-        $this->db->getRepository(User::class)
-                    ->find($user->id)
-                    ->update([
-                        'password' => $this->hash->create($password),
-                    ]);
-
-        $this->db->flush();
+        $this->updateUser($user, [
+            'password' => $this->hash->create($password),
+        ]);
     }
 
     /**
@@ -182,6 +212,30 @@ class Auth
         // REMEMBER: Very careful what user data you 're going to store in session!
         // This could cause many vulnerability issues!
         $this->session->set($this->key(), $user->id);
+    }
+
+    /**
+     * Set a remember token if the user ticked the remember me.
+     *
+     * @param  User $user
+     */
+    protected function setRememberToken($user)
+    {
+        // Generate a unique identifier and unique token
+        // that we will insert into the cookie
+        list($identifier, $token) = $this->recaller->generate();
+
+        // Set the cookie
+        $this->cookie->set(
+            'remember',
+            $this->recaller->generateValueForCookie($identifier, $token)
+        );
+
+        // Save the identifier and the token in the db
+        $this->updateUser($user, [
+            'remember_identifier' => $identifier,
+            'remember_token' => $this->recaller->getTokenHashed($token),
+        ]);
     }
 
     /**
@@ -218,5 +272,21 @@ class Auth
         return $this->db->getRepository(User::class)->findOneBy([
             'email' => $username
         ]);
+    }
+
+    /**
+     * Save data to the user model.
+     *
+     * @param  User   $user
+     * @param  array  $data
+     * @return void
+     */
+    protected function updateUser(User $user, array $data)
+    {
+        $this->db->getRepository(User::class)
+                    ->find($user->id)
+                    ->update($data);
+
+        $this->db->flush();
     }
 }

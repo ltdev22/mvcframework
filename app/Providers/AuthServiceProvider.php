@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use App\Auth\Auth;
+use App\Auth\Recaller;
 use App\Auth\Hashing\HasherInterface;
 use App\Session\SessionStoreInterface;
+use App\Cookie\CookieJar;
 use Doctrine\ORM\EntityManager;
 
 class AuthServiceProvider extends AbstractServiceProvider
@@ -33,7 +35,9 @@ class AuthServiceProvider extends AbstractServiceProvider
             return new Auth(
                 $container->get(EntityManager::class),
                 $container->get(HasherInterface::class),
-                $container->get(SessionStoreInterface::class)
+                $container->get(SessionStoreInterface::class),
+                new Recaller(),
+                $container->get(CookieJar::class)
             );
         });
     }

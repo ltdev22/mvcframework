@@ -2,20 +2,15 @@
 
 namespace App\Auth;
 
-use Doctrine\ORM\EntityManager;
 use App\Auth\Recaller;
 use App\Models\User;
 use App\Auth\Hashing\HasherInterface;
+use App\Auth\Providers\UserProviderInterface;
 use App\Session\SessionStoreInterface;
 use App\Cookie\CookieJar;
 
 class Auth
 {
-    /**
-     * The Doctrine instance
-     * @var \Doctrine\ORM\EntityManager
-     */
-    protected $db;
 
     /**
      * The hash instance.
@@ -48,33 +43,33 @@ class Auth
     /**
      * The loggedin user instance.
      *
-     * @var \App\Models\User
+     * @var \App\Auth\Providers\UserProviderInterface
      */
     protected $user;
 
     /**
      * Create new auth instance.
      *
-     * @param EntityManager         $db
      * @param HasherInterface       $hash
      * @param SessionStoreInterface $session
      * @param Recaller              $recaller
      * @param CookieJar             $cookie
+     * @param UserProviderInterface $user
      * @return void
      */
     public function __construct(
-        EntityManager $db,
         HasherInterface $hash,
         SessionStoreInterface $session,
         Recaller $recaller,
-        CookieJar $cookie
+        CookieJar $cookie,
+        UserProviderInterface $user
     )
     {
-        $this->db = $db;
         $this->hash = $hash;
         $this->session = $session;
         $this->recaller = $recaller;
         $this->cookie = $cookie;
+        $this->user = $user;
     }
 
     /**
@@ -88,14 +83,17 @@ class Auth
     public function attempt(string $username, string $password, bool $remember = false): bool
     {
         // Get the user and check the credetials given
-        $user = $this->getByUsername($username);
+        $user = $this->user->getByUsername($username);
 
         if (!$user || !$this->hasValidCredentials($user, $password)) {
             return false;
         }
 
         if ($this->needsRehash($user)) {
-            $this->rehashPassword($user, $password);
+            $this->user->updateUserPasswordHash(
+                $user,
+                $this->hash->create($password)
+            );
         }
 
         // The user can login, so lets keep him in session
@@ -166,10 +164,11 @@ class Auth
         );
 
         // Save the identifier and the token in the db
-        $this->updateUser($user, [
-            'remember_identifier' => $identifier,
-            'remember_token' => $this->recaller->getTokenHashed($token),
-        ]);
+        $this->user->setUserRememberToken(
+            $user,
+            $identifier,
+            $this->recaller->getTokenHashed($token)
+        );
     }
 
     /**
@@ -192,7 +191,7 @@ class Auth
     public function setUserFromSession()
     {
         // Get the user by its session ID
-        $user = $this->getById($this->session->get($this->key()));
+        $user = $this->user->getById($this->session->get($this->key()));
 
         if (!$user) {
             throw new \Exception('Auth user not found.');
@@ -210,13 +209,8 @@ class Auth
             $this->cookie->get('remember')
         );
 
-        // Get the user
-        $user = $this->db->getRepository(User::class)->findOneBy([
-            'remember_identifier' => $identifier,
-        ]);
-
-        // Clear the cookie if no user found
-        if (!$user) {
+        // Try to get the user and clear the cookie if no user found
+        if (!$user = $this->user->getByRememberIdentifier($identifier)) {
             $this->cookie->clear('remember');
             return;
         }
@@ -225,10 +219,7 @@ class Auth
         if (!$this->recaller->validateToken($token, $user->remember_token)) {
 
             // Clear identifier and token from db and also the cookie for security reasons
-            $this->updateUser($user, [
-                'remember_identifier' => null,
-                'remember_token' => null,
-            ]);
+            $this->user->clearUserRememberToken($user);
 
             $this->cookie->clear('remember');
 
@@ -273,19 +264,6 @@ class Auth
     }
 
     /**
-     * Rehash user's password.
-     *
-     * @param  \App\Models\User   $user
-     * @param  string             $password
-     */
-    protected function rehashPassword(User $user, string $password): bool
-    {
-        $this->updateUser($user, [
-            'password' => $this->hash->create($password),
-        ]);
-    }
-
-    /**
      * Return the key we keep in session for the logged in user.
      * Typically this would be the user ID.
      *
@@ -294,46 +272,5 @@ class Auth
     protected function key(): string
     {
         return 'id';
-    }
-
-    /**
-     * Return the user record by the ID.
-     *
-     * @param  int   $id
-     * @return \App\Models\User|null
-     */
-    protected function getById(int $id): ?User
-    {
-        return $this->db->getRepository(User::class)->find($id);
-    }
-
-    /**
-     * Return the user record finded be the username
-     * (in this case is by email actually)
-     *
-     * @param  string   $username
-     * @return \App\Models\User|null
-     */
-    protected function getByUsername(string $username): ?User
-    {
-        return $this->db->getRepository(User::class)->findOneBy([
-            'email' => $username
-        ]);
-    }
-
-    /**
-     * Save data to the user model.
-     *
-     * @param  User   $user
-     * @param  array  $data
-     * @return void
-     */
-    protected function updateUser(User $user, array $data)
-    {
-        $this->db->getRepository(User::class)
-                    ->find($user->id)
-                    ->update($data);
-
-        $this->db->flush();
     }
 }

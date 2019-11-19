@@ -215,9 +215,23 @@ class Auth
             'remember_identifier' => $identifier,
         ]);
 
+        // Clear the cookie if no user found
+        if (!$user) {
+            $this->cookie->clear('remember');
+            return;
+        }
+
         // Validate the user's token
         if (!$this->recaller->validateToken($token, $user->remember_token)) {
-            // @todo clear cookie
+
+            // Clear identifier and token from db and also the cookie for security reasons
+            $this->updateUser($user, [
+                'remember_identifier' => null,
+                'remember_token' => null,
+            ]);
+
+            $this->cookie->clear('remember');
+
             throw new \Exception("Error Processing Request", 1);
         }
 

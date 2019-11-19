@@ -43,9 +43,16 @@ class Auth
     /**
      * The loggedin user instance.
      *
-     * @var \App\Auth\Providers\UserProviderInterface
+     * @var \App\Models\User
      */
     protected $user;
+
+    /**
+     * The user provider instance.
+     *
+     * @var \App\Auth\Providers\UserProviderInterface
+     */
+    protected $provider;
 
     /**
      * Create new auth instance.
@@ -62,14 +69,14 @@ class Auth
         SessionStoreInterface $session,
         Recaller $recaller,
         CookieJar $cookie,
-        UserProviderInterface $user
+        UserProviderInterface $provider
     )
     {
         $this->hash = $hash;
         $this->session = $session;
         $this->recaller = $recaller;
         $this->cookie = $cookie;
-        $this->user = $user;
+        $this->provider = $provider;
     }
 
     /**
@@ -83,14 +90,14 @@ class Auth
     public function attempt(string $username, string $password, bool $remember = false): bool
     {
         // Get the user and check the credetials given
-        $user = $this->user->getByUsername($username);
+        $user = $this->provider->getByUsername($username);
 
         if (!$user || !$this->hasValidCredentials($user, $password)) {
             return false;
         }
 
         if ($this->needsRehash($user)) {
-            $this->user->updateUserPasswordHash(
+            $this->provider->updateUserPasswordHash(
                 $user,
                 $this->hash->create($password)
             );
@@ -113,6 +120,8 @@ class Auth
      */
     public function logout()
     {
+        $this->provider->clearUserRememberToken($this->user);
+        $this->cookie->clear('remember');
         $this->session->clear($this->key());
     }
 
@@ -164,7 +173,7 @@ class Auth
         );
 
         // Save the identifier and the token in the db
-        $this->user->setUserRememberToken(
+        $this->provider->setUserRememberToken(
             $user,
             $identifier,
             $this->recaller->getTokenHashed($token)
@@ -191,7 +200,7 @@ class Auth
     public function setUserFromSession()
     {
         // Get the user by its session ID
-        $user = $this->user->getById($this->session->get($this->key()));
+        $user = $this->provider->getById($this->session->get($this->key()));
 
         if (!$user) {
             throw new \Exception('Auth user not found.');
@@ -210,7 +219,7 @@ class Auth
         );
 
         // Try to get the user and clear the cookie if no user found
-        if (!$user = $this->user->getByRememberIdentifier($identifier)) {
+        if (!$user = $this->provider->getByRememberIdentifier($identifier)) {
             $this->cookie->clear('remember');
             return;
         }
@@ -219,7 +228,7 @@ class Auth
         if (!$this->recaller->validateToken($token, $user->remember_token)) {
 
             // Clear identifier and token from db and also the cookie for security reasons
-            $this->user->clearUserRememberToken($user);
+            $this->provider->clearUserRememberToken($user);
 
             $this->cookie->clear('remember');
 

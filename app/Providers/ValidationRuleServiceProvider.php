@@ -6,7 +6,6 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Container\ServiceProvider\BootableServiceProviderInterface;
 use Valitron\Validator;
 use App\Rules\ExistsRule;
-use Doctrine\ORM\EntityManager;
 
 class ValidationRuleServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
 {
@@ -32,9 +31,7 @@ class ValidationRuleServiceProvider extends AbstractServiceProvider implements B
          * $fields : additional fields
          */
         Validator::addRule('exists', function ($field, $value, $params, $fields) {
-            $rule = new ExistsRule(
-                $this->getContainer()->get(EntityManager::class)
-            );
+            $rule = new ExistsRule();
 
             return $rule->validate($field, $value, $params, $fields);
 

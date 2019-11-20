@@ -9,16 +9,9 @@ use App\Auth\Auth;
 use App\Auth\Hashing\HasherInterface;
 use App\Models\User;
 use League\Route\Router;
-use Doctrine\ORM\EntityManager;
 
 class RegisterController extends Controller
 {
-    /**
-     * The db instance.
-     *
-     * @var \Doctrine\ORM\EntityManager
-     */
-    protected $db;
 
     /**
      * The auth instance.
@@ -54,7 +47,6 @@ class RegisterController extends Controller
      * @param   \App\Utilities\View                     $view
      * @param   \App\Auth\Hashing\HasherInterface       $hash
      * @param   \League\Route\Router                    $route
-     * @param   \Doctrine\ORM\EntityManager             $db
      * @param   \App\Auth\Auth                          $auth
      * @return  void
      */
@@ -62,14 +54,12 @@ class RegisterController extends Controller
         View $view,
         HasherInterface $hash,
         Router $route,
-        EntityManager $db,
         Auth $auth
     )
     {
         $this->view = $view;
         $this->hash = $hash;
         $this->route = $route;
-        $this->db = $db;
         $this->auth = $auth;
     }
 
@@ -110,20 +100,12 @@ class RegisterController extends Controller
      */
     protected function createUser(array $data)
     {
-        $user = new User;
-
-        $user->fill([
+        return User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => $this->hash->create($data['password']),
         ]);
-
-        // This is where we store the user
-        $this->db->persist($user);
-        $this->db->flush();
-
-        return $user;
     }
 
     /**

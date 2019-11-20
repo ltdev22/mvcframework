@@ -37,7 +37,7 @@ class Authenticate implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Persist the logged in user
-        if ($this->auth->hasUserInSession()) {
+        if ($this->auth->check()) {
             try {
                 $this->auth->setUserFromSession();
             } catch (\Exception $e) {

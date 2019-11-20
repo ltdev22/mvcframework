@@ -5,7 +5,6 @@ namespace App\Auth;
 use App\Auth\Recaller;
 use App\Models\User;
 use App\Auth\Hashing\HasherInterface;
-use App\Auth\Providers\UserProviderInterface;
 use App\Session\SessionStoreInterface;
 use App\Cookie\CookieJar;
 
@@ -48,62 +47,55 @@ class Auth
     protected $user;
 
     /**
-     * The user provider instance.
-     *
-     * @var \App\Auth\Providers\UserProviderInterface
-     */
-    protected $provider;
-
-    /**
      * Create new auth instance.
      *
      * @param HasherInterface       $hash
      * @param SessionStoreInterface $session
      * @param Recaller              $recaller
      * @param CookieJar             $cookie
-     * @param UserProviderInterface $user
+     *
      * @return void
      */
     public function __construct(
         HasherInterface $hash,
         SessionStoreInterface $session,
         Recaller $recaller,
-        CookieJar $cookie,
-        UserProviderInterface $provider
+        CookieJar $cookie
     )
     {
         $this->hash = $hash;
         $this->session = $session;
         $this->recaller = $recaller;
         $this->cookie = $cookie;
-        $this->provider = $provider;
     }
 
     /**
      * Try to log in the user.
      *
-     * @param  string  $username
+     * @param  string  $credential
      * @param  string  $password
      * @param  boolean $remember
      * @return boolean
      */
-    public function attempt(string $username, string $password, bool $remember = false): bool
+    public function attempt(string $credential, string $password, bool $remember = false): bool
     {
         // Get the user and check the credetials given
-        $user = $this->provider->getByUsername($username);
+        $user = $this->getByCredential($credential);
 
         if (!$user || !$this->hasValidCredentials($user, $password)) {
             return false;
         }
 
+        // Update the password hash if required (i.e if the encryption cost changes)
         if ($this->needsRehash($user)) {
-            $this->provider->updateUserPasswordHash(
+            $this->updateUserPasswordHash(
                 $user,
                 $this->hash->create($password)
             );
         }
 
         // The user can login, so lets keep him in session
+        // also lets set the remember cookie if he clicked the 'remember me' on login
         $this->setUserSession($user);
 
         if ($remember) {
@@ -114,25 +106,15 @@ class Auth
     }
 
     /**
-     * Log the user out.
+     * Log the user out by clearing cookies, sessions everything
      *
      * @return void
      */
     public function logout()
     {
-        $this->provider->clearUserRememberToken($this->user);
+        $this->clearUserRememberToken($this->user);
         $this->cookie->clear('remember');
         $this->session->clear($this->key());
-    }
-
-    /**
-     * Do we have a logged in user?
-     *
-     * @return bool
-     */
-    public function check(): bool
-    {
-        return $this->hasUserInSession();
     }
 
     /**
@@ -146,11 +128,84 @@ class Auth
     }
 
     /**
+     * Do we have a logged in user?
+     *
+     * @return bool
+     */
+    public function check(): bool
+    {
+        return $this->hasUserInSession();
+    }
+
+    /**
+     * Persist the logged in user.
+     *
+     * @return  void
+     */
+    public function setUserFromSession()
+    {
+        // Get the user by its session ID
+        $user = User::find(
+            $this->session->get($this->key())
+        );
+
+        if (!$user) {
+            throw new \Exception('Auth user not found.');
+        }
+
+        // Set the user as Auth user
+        $this->user = $user;
+    }
+
+    /**
+     * Login the user using cookie.
+     *
+     * @return void
+     */
+    public function setUserFromCookie()
+    {
+        // Get the identifier and the token
+        list($identifier, $token) = $this->recaller->splitCookieValue(
+            $this->cookie->get('remember')
+        );
+
+        // Try to get the user and clear the cookie if no user found
+        if (!$user = $this->getByRememberIdentifier($identifier)) {
+            $this->cookie->clear('remember');
+            return;
+        }
+
+        // Validate the user's token
+        if (!$this->recaller->validateToken($token, $user->remember_token)) {
+
+            // Clear identifier and token from db and also the cookie for security reasons
+            $this->clearUserRememberToken($user);
+
+            $this->cookie->clear('remember');
+
+            throw new \Exception('The token has been cleared.');
+        }
+
+        // Finally we can sing in the user
+        $this->setUserSession($user);
+    }
+
+    /**
+     * Do we have a 'remember' cookie set already?
+     *
+     * @return boolean
+     */
+    public function hasRecaller(): bool
+    {
+        return $this->cookie->exists('remember');
+    }
+
+    /**
      * Do we have a user stored in session?
      *
      * @return boolean
      */
-    public function hasUserInSession(): bool
+    protected function hasUserInSession(): bool
     {
         return $this->session->exists($this->key());
     }
@@ -160,7 +215,7 @@ class Auth
      *
      * @param  User $user
      */
-    protected function setRememberToken($user)
+    protected function setRememberToken(User $user)
     {
         // Generate a unique identifier and unique token
         // that we will insert into the cookie
@@ -173,11 +228,26 @@ class Auth
         );
 
         // Save the identifier and the token in the db
-        $this->provider->setUserRememberToken(
+        $this->setUserRememberToken(
             $user,
             $identifier,
             $this->recaller->getTokenHashed($token)
         );
+    }
+
+    /**
+     * Set a remember token for the user.
+     *
+     * @param User   $user
+     * @param string $identifier
+     * @param string $hash
+     */
+    protected function setUserRememberToken(User $user, string $identifier, string $hash)
+    {
+        return User::find($user->id)->update([
+            'remember_identifier' => $identifier,
+            'remember_token' => $hash
+        ]);
     }
 
     /**
@@ -193,60 +263,54 @@ class Auth
     }
 
     /**
-     * Persist the logged in user.
+     * Update the user's password hash.
      *
-     * @return  void
+     * @param  User   $user
+     * @param  string $hash
      */
-    public function setUserFromSession()
+    protected function updateUserPasswordHash(User $user, string $hash)
     {
-        // Get the user by its session ID
-        $user = $this->provider->getById($this->session->get($this->key()));
-
-        if (!$user) {
-            throw new \Exception('Auth user not found.');
-        }
-
-        // Set the user as Auth user
-        $this->user = $user;
-    }
-
-
-    public function setUserFromCookie()
-    {
-        // Get the identifier and the token
-        list($identifier, $token) = $this->recaller->splitCookieValue(
-            $this->cookie->get('remember')
-        );
-
-        // Try to get the user and clear the cookie if no user found
-        if (!$user = $this->provider->getByRememberIdentifier($identifier)) {
-            $this->cookie->clear('remember');
-            return;
-        }
-
-        // Validate the user's token
-        if (!$this->recaller->validateToken($token, $user->remember_token)) {
-
-            // Clear identifier and token from db and also the cookie for security reasons
-            $this->provider->clearUserRememberToken($user);
-
-            $this->cookie->clear('remember');
-
-            throw new \Exception("Error Processing Request", 1);
-        }
-
-        // Finally we can sing in the user
-        $this->setUserSession($user);
+        return User::find($user->id)->update([
+            'password' => $hash
+        ]);
     }
 
     /**
-     * Do we have a 'remember' cookie set already?
+     * Find a user by his login credential. The credential would be
+     * either his email or his username
      *
-     * @return boolean
+     * @return \App\Models\User|null
      */
-    public function hasRecaller(): bool
+    protected function getByCredential(string $credential): ?User
     {
-        return $this->cookie->exists('remember');
+        return User::where('email', $credential)->first();
+    }
+
+    /**
+     * Find a user by the remember identifier
+     *
+     * @return \App\Models\User|null
+     */
+    protected function getByRememberIdentifier(string $identifier): ?User
+    {
+        return User::where('remember_identifier', $identifier)->first();
+    }
+
+    /**
+     * Delete user's remember identifier and the remember token from the database.
+     *
+     * @param  null|User   $user
+     */
+    protected function clearUserRememberToken(?User $user)
+    {
+        if (!$user) {
+            return;
+        }
+
+        return User::find($user->id)->update([
+            'remember_identifier' => null,
+            'remember_token' => null,
+        ]);
     }
 
     /**

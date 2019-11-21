@@ -6,7 +6,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use App\Security\Csrf;
+use App\Core\Security\Csrf;
 use App\Core\Exceptions\CsrfTokenException;
 
 class CsrfGuard implements MiddlewareInterface
@@ -14,14 +14,14 @@ class CsrfGuard implements MiddlewareInterface
     /**
      * The csrf instance
      *
-     * @var \App\Security\Csrf
+     * @var \App\Core\Security\Csrf
      */
     protected $csrf;
 
     /**
      * Create new instance.
      *
-     * @param \App\Security\Csrf $csrf
+     * @param \App\Core\Security\Csrf $csrf
      */
     public function __construct(Csrf $csrf)
     {

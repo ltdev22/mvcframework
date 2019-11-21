@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use App\Cookie\CookieJar;
+use App\Core\Cookie\CookieJar;
 
 class CookieServiceProvider extends AbstractServiceProvider
 {

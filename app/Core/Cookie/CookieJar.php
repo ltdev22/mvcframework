@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Cookie;
+namespace App\Core\Cookie;
 
 class CookieJar
 {

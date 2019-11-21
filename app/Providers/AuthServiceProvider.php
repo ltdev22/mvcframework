@@ -7,7 +7,7 @@ use App\Core\Auth\Auth;
 use App\Core\Auth\Recaller;
 use App\Core\Auth\Hashing\HasherInterface;
 use App\Session\SessionStoreInterface;
-use App\Cookie\CookieJar;
+use App\Core\Cookie\CookieJar;
 
 class AuthServiceProvider extends AbstractServiceProvider
 {

@@ -6,7 +6,7 @@ use App\Core\Auth\Recaller;
 use App\Models\User;
 use App\Core\Auth\Hashing\HasherInterface;
 use App\Session\SessionStoreInterface;
-use App\Cookie\CookieJar;
+use App\Core\Cookie\CookieJar;
 
 class Auth
 {
@@ -28,7 +28,7 @@ class Auth
     /**
      * The cookie instance.
      *
-     * @var \App\Cookie\CookieJar
+     * @var \App\Core\Cookie\CookieJar
      */
     protected $cookie;
 

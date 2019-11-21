@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use Psr\Http\Message\RequestInterface;
 use Valitron\Validator;
-use App\Exceptions\ValidationFailedException;
+use App\Core\Exceptions\ValidationFailedException;
 
 abstract class Controller
 {
@@ -14,7 +14,7 @@ abstract class Controller
      * @param  \Psr\Http\Message\RequestInterface    $request
      * @param  array                                 $rules
      *
-     * @throws \App\Exceptions\ValidationFailedException
+     * @throws \App\Core\Exceptions\ValidationFailedException
      * @return array
      */
     public function validate(RequestInterface $request, array $rules)

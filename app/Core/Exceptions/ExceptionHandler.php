@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Core\Exceptions;
 
 use Exception;
 use ReflectionClass;
-use App\Exceptions\ValidationFailedException;
-use App\Exceptions\CsrfTokenException;
+use App\Core\Exceptions\ValidationFailedException;
+use App\Core\Exceptions\CsrfTokenException;
 use App\Session\SessionStoreInterface;
 use App\Utilities\View;
 use Psr\Http\Message\ResponseInterface;

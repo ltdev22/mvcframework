@@ -7,7 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use App\Security\Csrf;
-use App\Exceptions\CsrfTokenException;
+use App\Core\Exceptions\CsrfTokenException;
 
 class CsrfGuard implements MiddlewareInterface
 {

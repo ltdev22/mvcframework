@@ -6,21 +6,21 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use App\Auth\Auth;
+use App\Core\Auth\Auth;
 
 class Authenticated implements MiddlewareInterface
 {
     /**
      * The auth instence
      *
-     * @var \App\Auth\Auth
+     * @var \App\Core\Auth\Auth
      */
     protected $auth;
 
     /**
      * Create a new instance
      *
-     * @param \App\Auth\Auth $auth
+     * @param \App\Core\Auth\Auth $auth
      */
     public function __construct(Auth $auth)
     {

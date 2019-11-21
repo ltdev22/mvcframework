@@ -4,21 +4,21 @@ namespace App\Controllers\Auth;
 
 use App\Controllers\Controller;
 use Psr\Http\Message\RequestInterface;
-use App\Auth\Auth;
+use App\Core\Auth\Auth;
 
 class LogoutController extends Controller
 {
     /**
      * The auth instance
      *
-     * @var \App\Auth\Auth
+     * @var \App\Core\Auth\Auth
      */
     protected $auth;
 
     /**
      * Instatiate the controller
      *
-     * @param   \App\Auth\Auth     $auth
+     * @param   \App\Core\Auth\Auth     $auth
      * @return  void
      */
     public function __construct(Auth $auth)

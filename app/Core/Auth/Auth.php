@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Auth;
+namespace App\Core\Auth;
 
-use App\Auth\Recaller;
+use App\Core\Auth\Recaller;
 use App\Models\User;
-use App\Auth\Hashing\HasherInterface;
+use App\Core\Auth\Hashing\HasherInterface;
 use App\Session\SessionStoreInterface;
 use App\Cookie\CookieJar;
 
@@ -14,7 +14,7 @@ class Auth
     /**
      * The hash instance.
      *
-     * @var \App\Auth\Hashing\HasherInterface
+     * @var \App\Core\Auth\Hashing\HasherInterface
      */
     protected $hash;
 
@@ -35,7 +35,7 @@ class Auth
     /**
      * The recaller instance.
      *
-     * @var \App\Auth\Recaller
+     * @var \App\Core\Auth\Recaller
      */
     protected $recaller;
 

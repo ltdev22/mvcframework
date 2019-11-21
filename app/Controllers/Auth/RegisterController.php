@@ -5,8 +5,8 @@ namespace App\Controllers\Auth;
 use App\Controllers\Controller;
 use Psr\Http\Message\RequestInterface;
 use App\Utilities\View;
-use App\Auth\Auth;
-use App\Auth\Hashing\HasherInterface;
+use App\Core\Auth\Auth;
+use App\Core\Auth\Hashing\HasherInterface;
 use App\Models\User;
 use League\Route\Router;
 
@@ -16,14 +16,14 @@ class RegisterController extends Controller
     /**
      * The auth instance.
      *
-     * @var \App\Auth\Auth
+     * @var \App\Core\Auth\Auth
      */
     protected $auth;
 
     /**
      * The hash instance.
      *
-     * @var \App\Auth\Hashing\HasherInterface
+     * @var \App\Core\Auth\Hashing\HasherInterface
      */
     protected $hash;
 
@@ -45,9 +45,9 @@ class RegisterController extends Controller
      * Instatiate the controller
      *
      * @param   \App\Utilities\View                     $view
-     * @param   \App\Auth\Hashing\HasherInterface       $hash
+     * @param   \App\Core\Auth\Hashing\HasherInterface       $hash
      * @param   \League\Route\Router                    $route
-     * @param   \App\Auth\Auth                          $auth
+     * @param   \App\Core\Auth\Auth                          $auth
      * @return  void
      */
     public function __construct(

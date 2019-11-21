@@ -6,21 +6,21 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use App\Auth\Auth;
+use App\Core\Auth\Auth;
 
 class AuthenticateFromCookie implements MiddlewareInterface
 {
     /**
      * The auth instance.
      *
-     * @var \App\Auth\Auth
+     * @var \App\Core\Auth\Auth
      */
     protected $auth;
 
     /**
      * Create new instance.
      *
-     * @param  \App\Auth\Auth $auth
+     * @param  \App\Core\Auth\Auth $auth
      * @return  void
      */
     public function __construct(Auth $auth)

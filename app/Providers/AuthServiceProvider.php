@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use App\Auth\Auth;
-use App\Auth\Recaller;
-use App\Auth\Hashing\HasherInterface;
+use App\Core\Auth\Auth;
+use App\Core\Auth\Recaller;
+use App\Core\Auth\Hashing\HasherInterface;
 use App\Session\SessionStoreInterface;
 use App\Cookie\CookieJar;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Auth\Hashing;
+namespace App\Core\Auth\Hashing;
 
-use App\Auth\Hashing\HasherInterface;
+use App\Core\Auth\Hashing\HasherInterface;
 
 class BcryptHasher implements HasherInterface
 {

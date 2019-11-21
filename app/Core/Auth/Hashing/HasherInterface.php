@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Auth\Hashing;
+namespace App\Core\Auth\Hashing;
 
 interface HasherInterface
 {

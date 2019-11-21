@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use App\Auth\Hashing\HasherInterface;
-use App\Auth\Hashing\BcryptHasher;
+use App\Core\Auth\Hashing\HasherInterface;
+use App\Core\Auth\Hashing\BcryptHasher;
 
 class HashServiceProvider extends AbstractServiceProvider
 {

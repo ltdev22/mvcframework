@@ -6,7 +6,7 @@ use App\Controllers\Controller;
 use Psr\Http\Message\RequestInterface;
 use League\Route\Router;
 use App\Utilities\View;
-use App\Auth\Auth;
+use App\Core\Auth\Auth;
 use App\Session\FlashSession;
 
 class LoginController extends Controller
@@ -21,7 +21,7 @@ class LoginController extends Controller
     /**
      * The auth instance.
      *
-     * @var \App\Auth\Auth
+     * @var \App\Core\Auth\Auth
      */
     protected $auth;
 
@@ -43,7 +43,7 @@ class LoginController extends Controller
      * Instatiate the controller
      *
      * @param   \App\Utilities\View     $view
-     * @param   \App\Auth\Auth          $auth
+     * @param   \App\Core\Auth\Auth          $auth
      * @param   \League\Route\Router    $route
      * @param   \App\Session\FlashSession $flash
      * @return  void

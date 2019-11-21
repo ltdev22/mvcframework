@@ -5,7 +5,7 @@ namespace App\Core\Auth;
 use App\Core\Auth\Recaller;
 use App\Models\User;
 use App\Core\Auth\Hashing\HasherInterface;
-use App\Session\SessionStoreInterface;
+use App\Core\Session\SessionStoreInterface;
 use App\Core\Cookie\CookieJar;
 
 class Auth
@@ -21,7 +21,7 @@ class Auth
     /**
      * The session instance.
      *
-     * @var \App\Session\SessionStoreInterface
+     * @var \App\Core\Session\SessionStoreInterface
      */
     protected $session;
 

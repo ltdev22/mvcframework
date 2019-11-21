@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Session;
+namespace App\Core\Session;
 
-use App\Session\SessionStoreInterface;
+use App\Core\Session\SessionStoreInterface;
 
 class FlashSession
 {

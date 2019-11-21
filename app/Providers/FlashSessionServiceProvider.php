@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use App\Session\FlashSession;
-use App\Session\SessionStoreInterface;
+use App\Core\Session\FlashSession;
+use App\Core\Session\SessionStoreInterface;
 
 class FlashSessionServiceProvider extends AbstractServiceProvider
 {

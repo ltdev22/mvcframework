@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Session;
+namespace App\Core\Session;
 
 interface SessionStoreInterface
 {

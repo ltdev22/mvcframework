@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use App\Session\SessionStoreInterface;
-use App\Session\FileSession;
+use App\Core\Session\SessionStoreInterface;
+use App\Core\Session\FileSession;
 
 class SessionServiceProvider extends AbstractServiceProvider
 {

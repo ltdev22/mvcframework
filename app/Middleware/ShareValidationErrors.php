@@ -7,7 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use App\Utilities\View;
-use App\Session\SessionStoreInterface;
+use App\Core\Session\SessionStoreInterface;
 
 class ShareValidationErrors implements MiddlewareInterface
 {
@@ -22,7 +22,7 @@ class ShareValidationErrors implements MiddlewareInterface
     /**
      * Hold any session we have set.
      *
-     * @var \App\Session\SessionStoreInterface
+     * @var \App\Core\Session\SessionStoreInterface
      */
     protected $session;
 
@@ -30,7 +30,7 @@ class ShareValidationErrors implements MiddlewareInterface
      * Create new instance
      *
      * @param \App\Utilities\View                    $view
-     * @param \App\Session\SessionStoreInterface    $session
+     * @param \App\Core\Session\SessionStoreInterface    $session
      */
     public function __construct(View $view, SessionStoreInterface $session)
     {

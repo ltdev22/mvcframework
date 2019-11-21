@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use App\Core\Security\Csrf;
-use App\Session\SessionStoreInterface;
+use App\Core\Session\SessionStoreInterface;
 
 class CsrfServiceProvider extends AbstractServiceProvider
 {

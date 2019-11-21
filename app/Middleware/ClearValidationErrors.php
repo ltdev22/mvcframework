@@ -6,21 +6,21 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use App\Session\SessionStoreInterface;
+use App\Core\Session\SessionStoreInterface;
 
 class ClearValidationErrors implements MiddlewareInterface
 {
     /**
      * Hold any session we have set.
      *
-     * @var \App\Session\SessionStoreInterface
+     * @var \App\Core\Session\SessionStoreInterface
      */
     protected $session;
 
     /**
      * Create new instance
      *
-     * @param \App\Session\SessionStoreInterface    $session
+     * @param \App\Core\Session\SessionStoreInterface    $session
      */
     public function __construct(SessionStoreInterface $session)
     {

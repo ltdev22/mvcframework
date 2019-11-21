@@ -2,14 +2,14 @@
 
 namespace App\Core\Security;
 
-use App\Session\SessionStoreInterface;
+use App\Core\Session\SessionStoreInterface;
 
 class Csrf
 {
     /**
      * The session instance.
      *
-     * @var \App\Session\SessionStoreInterface
+     * @var \App\Core\Session\SessionStoreInterface
      */
     protected $session;
 

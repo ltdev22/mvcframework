@@ -6,7 +6,7 @@ use Exception;
 use ReflectionClass;
 use App\Core\Exceptions\ValidationFailedException;
 use App\Core\Exceptions\CsrfTokenException;
-use App\Session\SessionStoreInterface;
+use App\Core\Session\SessionStoreInterface;
 use App\Utilities\View;
 use Psr\Http\Message\ResponseInterface;
 
@@ -22,7 +22,7 @@ class ExceptionHandler
     /**
      * The session store type being injected within the exception
      *
-     * @var \App\Session\SessionStoreInterface
+     * @var \App\Core\Session\SessionStoreInterface
      */
     protected $session;
 

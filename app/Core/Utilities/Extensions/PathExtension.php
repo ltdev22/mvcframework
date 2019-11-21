@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Utilities\Extensions;
+namespace App\Core\Utilities\Extensions;
 
 use Twig_Extension;
 use Twig_SimpleFunction;

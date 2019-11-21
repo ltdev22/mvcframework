@@ -7,7 +7,7 @@ use ReflectionClass;
 use App\Core\Exceptions\ValidationFailedException;
 use App\Core\Exceptions\CsrfTokenException;
 use App\Core\Session\SessionStoreInterface;
-use App\Utilities\View;
+use App\Core\Utilities\View;
 use Psr\Http\Message\ResponseInterface;
 
 class ExceptionHandler
@@ -29,7 +29,7 @@ class ExceptionHandler
     /**
      * The view instance.
      *
-     * @var \App\Utilities\View
+     * @var \App\Core\Utilities\View
      */
     protected $view;
 

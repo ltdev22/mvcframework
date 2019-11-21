@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Controllers\Controller;
 use Psr\Http\Message\RequestInterface;
 use Zend\Diactoros\Response;
-use App\Utilities\View;
+use App\Core\Utilities\View;
 
 class HomeController extends Controller
 {
@@ -19,7 +19,7 @@ class HomeController extends Controller
     /**
      * Instatiate the controller
      *
-     * @param   \App\Utilities\View     $view
+     * @param   \App\Core\Utilities\View     $view
      * @return  void
      */
     public function __construct(View $view)

@@ -5,7 +5,7 @@ namespace App\Controllers\Auth;
 use App\Controllers\Controller;
 use Psr\Http\Message\RequestInterface;
 use League\Route\Router;
-use App\Utilities\View;
+use App\Core\Utilities\View;
 use App\Core\Auth\Auth;
 use App\Core\Session\FlashSession;
 
@@ -14,7 +14,7 @@ class LoginController extends Controller
     /**
      * The view instance injected in routes.php
      *
-     * @var \App\Utilities\View
+     * @var \App\Core\Utilities\View
      */
     protected $view;
 
@@ -42,7 +42,7 @@ class LoginController extends Controller
     /**
      * Instatiate the controller
      *
-     * @param   \App\Utilities\View     $view
+     * @param   \App\Core\Utilities\View     $view
      * @param   \App\Core\Auth\Auth          $auth
      * @param   \League\Route\Router    $route
      * @param   \App\Core\Session\FlashSession $flash

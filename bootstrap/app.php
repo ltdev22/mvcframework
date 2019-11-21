@@ -36,7 +36,7 @@ try {
     $handler = new \App\Core\Exceptions\ExceptionHandler(
         $e,
         $container->get(\App\Core\Session\SessionStoreInterface::class),
-        $container->get(\App\Utilities\View::class)
+        $container->get(\App\Core\Utilities\View::class)
     );
 
     $response = $handler->respond();

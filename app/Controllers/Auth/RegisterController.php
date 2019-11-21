@@ -4,7 +4,7 @@ namespace App\Controllers\Auth;
 
 use App\Controllers\Controller;
 use Psr\Http\Message\RequestInterface;
-use App\Utilities\View;
+use App\Core\Utilities\View;
 use App\Core\Auth\Auth;
 use App\Core\Auth\Hashing\HasherInterface;
 use App\Models\User;
@@ -37,14 +37,14 @@ class RegisterController extends Controller
     /**
      * The view instance injected in routes.php
      *
-     * @var \App\Utilities\View
+     * @var \App\Core\Utilities\View
      */
     protected $view;
 
     /**
      * Instatiate the controller
      *
-     * @param   \App\Utilities\View                     $view
+     * @param   \App\Core\Utilities\View                     $view
      * @param   \App\Core\Auth\Hashing\HasherInterface       $hash
      * @param   \League\Route\Router                    $route
      * @param   \App\Core\Auth\Auth                          $auth

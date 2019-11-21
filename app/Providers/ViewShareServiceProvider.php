@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Container\ServiceProvider\BootableServiceProviderInterface;
-use App\Utilities\View;
+use App\Core\Utilities\View;
 use App\Core\Auth\Auth;
 use App\Core\Session\FlashSession;
 use App\Core\Security\Csrf;

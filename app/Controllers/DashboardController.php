@@ -4,21 +4,21 @@ namespace App\Controllers;
 
 use App\Controllers\Controller;
 use Psr\Http\Message\RequestInterface;
-use App\Utilities\View;
+use App\Core\Utilities\View;
 
 class DashboardController extends Controller
 {
     /**
      * The view instance injected in routes.php
      *
-     * @var \App\Utilities\View
+     * @var \App\Core\Utilities\View
      */
     protected $view;
 
     /**
      * Instatiate the controller
      *
-     * @param   \App\Utilities\View     $view
+     * @param   \App\Core\Utilities\View     $view
      * @return  void
      */
     public function __construct(View $view)
